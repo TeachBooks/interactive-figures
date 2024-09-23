@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="usable_example.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="4.2179991"
+     inkscape:cx="236.48654"
+     inkscape:cy="535.08784"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer3" />
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="TriangleStart"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="TriangleStart"
+       markerWidth="5.3244081"
+       markerHeight="6.155385"
+       viewBox="0 0 5.3244081 6.1553851"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path135" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="TriangleStart-4"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="TriangleStart"
+       markerWidth="5.3244081"
+       markerHeight="6.155385"
+       viewBox="0 0 5.3244081 6.1553851"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path135-8" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="xy-2"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264999;marker-start:url(#TriangleStart-4);marker-end:url(#TriangleStart-4)"
+       d="m 48.328845,131.1626 v 22.45634 h 22.456344"
+       id="path351-0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="right-side-text">
+    <text
+       xml:space="preserve"
+       style="font-size:2.11667px;fill:#ff0000;stroke:none;stroke-width:0.264999"
+       x="80.283791"
+       y="135.40535"
+       id="text1222-7"><tspan
+         sodipodi:role="line"
+         id="tspan1220-5"
+         style="fill:#0000ff;stroke:none;stroke-width:0.265"
+         x="80.283791"
+         y="135.40535">sigma X1:</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.11667px;fill:#ff0000;stroke:none;stroke-width:0.264999"
+       x="80.283791"
+       y="139.41183"
+       id="text1222-2"><tspan
+         sodipodi:role="line"
+         id="tspan1220-9"
+         style="fill:#808000;stroke:none;stroke-width:0.265"
+         x="80.283791"
+         y="139.41183">sigma X2:</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.11667px;fill:#ff0000;stroke:none;stroke-width:0.264999"
+       x="80.283791"
+       y="131.41351"
+       id="text1222"><tspan
+         sodipodi:role="line"
+         id="tspan1220"
+         style="stroke:none;stroke-width:0.265"
+         x="80.283791"
+         y="131.41351">mean:</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="cov"
+     style="display:inline"
+     sodipodi:insensitive="true">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264999"
+       d="M 83.887108,153.85344 H 81.5662 v -11.54181 h 2.258181"
+       id="path1862" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264999"
+       d="m 94.91153,142.31163 h 2.320898 v 11.54181 H 94.97426"
+       id="path1862-5" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.88056px;fill:#000000;stroke:none;stroke-width:0.264999"
+       x="73.725296"
+       y="149.49986"
+       id="text1994"
+       inkscape:label="sigma"><tspan
+         sodipodi:role="line"
+         id="tspan1992"
+         style="font-size:3.88056px;fill:#000000;stroke:none;stroke-width:0.265"
+         x="73.725296"
+         y="149.49986">Σ=</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.82222px;fill:#000000;stroke:none;stroke-width:0.264999"
+       x="83.811211"
+       y="146.09323"
+       id="text2048"
+       inkscape:label="loc-00"><tspan
+         sodipodi:role="line"
+         id="tspan2046"
+         style="font-size:2.82222px;stroke-width:0.265"
+         x="83.811211"
+         y="146.09323">00</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.82223px;fill:#000000;stroke:none;stroke-width:0.264999"
+       x="90.67524"
+       y="152.05879"
+       id="text2052"
+       inkscape:label="loc-11"><tspan
+         sodipodi:role="line"
+         id="tspan2050"
+         style="stroke-width:0.265"
+         x="90.67524"
+         y="152.05879">11</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.82223px;fill:#000000;stroke:none;stroke-width:0.264999"
+       x="90.869545"
+       y="146.09325"
+       id="text2056"
+       inkscape:label="loc-01"><tspan
+         sodipodi:role="line"
+         id="tspan2054"
+         style="stroke-width:0.265"
+         x="90.869545"
+         y="146.09325">01</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.82223px;fill:#000000;stroke:none;stroke-width:0.264999"
+       x="83.616905"
+       y="152.09325"
+       id="text2060"
+       inkscape:label="loc-10"><tspan
+         sodipodi:role="line"
+         id="tspan2058"
+         style="stroke-width:0.265"
+         x="83.616905"
+         y="152.09325">10</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="xy-1">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264999;marker-start:url(#TriangleStart);marker-end:url(#TriangleStart)"
+       d="M 21.04863,130.99636 V 153.4527 H 43.504974"
+       id="path351" />
+  </g>
+</svg>
