@@ -53,6 +53,7 @@ This 'mini' project idea is to abstract d3 code, as well as create static templa
 ![template-image](/Images/inkscape-static_template.png)
 
 Therefore, instead of creating the SVG template with code, we can instead interact with the template made in Inkscape.
+
 ![d3-interaction](/Images/d3_select_axis.png)
 
 ## Goals
