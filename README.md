@@ -69,3 +69,10 @@ Therefore, instead of creating the SVG template with code, we can instead intera
 - [x] Select specific path element from the SVG
 - [ ] Update the SVG element attribute
 - [ ] Create a very simple scatter or line plot utilising the template
+
+# Useful documentation
+
+- [manipulating-svg-using-d3js (amphinicy)](https://www.amphinicy.com/blog/post/manipulating-svg-using-d3js-library)
+- [official d3-js documentation](https://d3js.org/d3-selection/modifying)
+- [manipulating svg (observablehq)](https://observablehq.com/@mbostock/manipulating-svg-files)
+
