@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="25.26mm"
+   height="16.677999mm"
+   viewBox="0 0 25.26 16.678"
    version="1.1"
    id="svg5"
    sodipodi:docname="template.svg"
@@ -25,11 +25,11 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="5.6568543"
-     inkscape:cx="101.20466"
-     inkscape:cy="447.95214"
-     inkscape:window-width="1280"
-     inkscape:window-height="737"
-     inkscape:window-x="3832"
+     inkscape:cx="17.942834"
+     inkscape:cy="28.107494"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1" />
@@ -38,15 +38,16 @@
   <g
      inkscape:label="xy-axis"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-19.312936,-111.0899)">
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264999"
-       d="m 19.445436,111.0899 v 14.67816"
+       d="M 20.50377,112.14824 V 126.8264"
        id="y"
        inkscape:label="y" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264999"
-       d="M 19.576441,125.63471 H 41.573182"
+       d="M 20.634775,126.69305 H 42.631516"
        id="x"
        sodipodi:nodetypes="cc"
        inkscape:label="x" />
