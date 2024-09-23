@@ -15,18 +15,29 @@
 </head>
 <!-- Create a div where the graph will take place -->
 <div id="my_datavisualization">
+   
 </div>
 
 <body>
    <script>
+      
+      // First read and add the image
 
-      const my_svg = d3.svg("https://raw.githubusercontent.com/TeachBooks/interactive-figures/refs/heads/main/Proof-of-concept/Templates/template.svg") // read the template
+      function add_svg(){
+         const my_svg = d3.svg("https://raw.githubusercontent.com/TeachBooks/interactive-figures/refs/heads/main/Proof-of-concept/Templates/template.svg") // read the template
 
-      my_svg.then(data => {
-         d3.select("#my_datavisualization").node().append(data.documentElement)
-      }); //appends the svg (document) to the selected div element
+         my_svg.then(data => {
+            d3.select("#my_datavisualization").node().append(data.documentElement);
+            var path_el = d3.select('path#x');
+            const timer = d3.timer(() => path_el.style("stroke", d3.interpolateRainbow(Date.now() / 10000)));
+         }); //appends the svg (document) to the selected div element...
 
-      const path_el = d3.select('path#x'); // selects x-axis from the template. This opens up the opportunities to modify it
+      }
+      // Some key points:
+      // 1. I think I am using a newer d3 version... originally they said path_el should be adjusted via path_el.attr(...)
+      // 2. using then key word loads the image asynchronously... hence why the timer is also within then keyword now
+      // 3. Gotta have 'wait_for_svg' function, then we're in business
+      add_svg();
 
       // I can do d3.select('svg').node() which returns the svg image...
 
