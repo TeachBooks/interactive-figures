@@ -75,4 +75,5 @@ Therefore, instead of creating the SVG template with code, we can instead intera
 - [manipulating-svg-using-d3js (amphinicy)](https://www.amphinicy.com/blog/post/manipulating-svg-using-d3js-library)
 - [official d3-js documentation](https://d3js.org/d3-selection/modifying)
 - [manipulating svg (observablehq)](https://observablehq.com/@mbostock/manipulating-svg-files)
-
+- [List of interesting D3js libraries](https://github.com/wbkd/awesome-d3)
+- [d3 discovery tool (also found in the link above)](https://d3-discovery.net/)
