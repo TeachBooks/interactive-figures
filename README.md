@@ -68,7 +68,7 @@ Therefore, instead of creating the SVG template with code, we can instead intera
 - [x] Insert SVG image to a web page.
 - [x] Select specific path element from the SVG
 - [x] Update the SVG element attribute
-- [ ] Create a very simple scatter or line plot utilising the template
+- [x] Create a very simple scatter or line plot utilising the template
 
 # Useful documentation
 
