@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="77.131882mm"
+   height="24.379196mm"
+   viewBox="0 0 77.131882 24.379196"
    version="1.1"
    id="svg5"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
@@ -24,15 +24,15 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="4.2179991"
-     inkscape:cx="236.48654"
-     inkscape:cy="535.08784"
+     inkscape:zoom="2.1089996"
+     inkscape:cx="115.93175"
+     inkscape:cy="100.99575"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="1912"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer3" />
+     inkscape:current-layer="layer1" />
   <defs
      id="defs2">
     <marker
@@ -54,39 +54,30 @@
          d="M 5.77,0 -2.88,5 V -5 Z"
          id="path135" />
     </marker>
-    <marker
-       style="overflow:visible"
-       id="TriangleStart-4"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="TriangleStart"
-       markerWidth="5.3244081"
-       markerHeight="6.155385"
-       viewBox="0 0 5.3244081 6.1553851"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.5)"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
-         d="M 5.77,0 -2.88,5 V -5 Z"
-         id="path135-8" />
-    </marker>
   </defs>
   <g
      inkscape:label="xy-2"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-20.233045,-130.05533)">
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.264999;marker-start:url(#TriangleStart-4);marker-end:url(#TriangleStart-4)"
-       d="m 48.328845,131.1626 v 22.45634 h 22.456344"
-       id="path351-0" />
+       style="fill:none;stroke:#000000;stroke-width:0.264999;marker-start:url(#TriangleStart)"
+       d="m 48.318281,131.65482 0,22.12977"
+       id="y"
+       inkscape:label="y"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264999;marker-end:url(#TriangleStart)"
+       d="M 48.449286,153.65124 H 70.312962"
+       id="x"
+       sodipodi:nodetypes="cc"
+       inkscape:label="x" />
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer4"
-     inkscape:label="right-side-text">
+     inkscape:label="right-side-text"
+     transform="translate(-20.233045,-130.05533)">
     <text
        xml:space="preserve"
        style="font-size:2.11667px;fill:#ff0000;stroke:none;stroke-width:0.264999"
@@ -126,7 +117,8 @@
      id="layer3"
      inkscape:label="cov"
      style="display:inline"
-     sodipodi:insensitive="true">
+     sodipodi:insensitive="true"
+     transform="translate(-20.233045,-130.05533)">
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264999"
        d="M 83.887108,153.85344 H 81.5662 v -11.54181 h 2.258181"
@@ -199,7 +191,8 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="xy-1">
+     inkscape:label="xy-1"
+     transform="translate(-20.233045,-130.05533)">
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264999;marker-start:url(#TriangleStart);marker-end:url(#TriangleStart)"
        d="M 21.04863,130.99636 V 153.4527 H 43.504974"
