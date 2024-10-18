@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>
+   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script> -->
+   <script src="https://d3js.org/d3.v7.min.js"></script>
+
+   <script type="text/javascript" src="./interactive-figures.js"></script>
+
+   <!-- <script type="text/javascript" src="./math.js"></script>
+
+   <script type="text/javascript" src="./d3.v7.min.js"></script> -->
+
+
+   <style>
+      body {
+         margin: 0;
+         overflow: hidden;
+         font-family: Helvetica, sans-serif;
+      }
+   </style>
+</head>
+<!-- Create a div where the graph will take place -->
+<div id="my_datavisualization">
+
+</div>
+
+<body>
+   <script>
+      // Get the viewport height and width
+      const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+      const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
+      var height = vh;
+      var width = vw;
+
+
+      function gaussianRandom(mean = 0, stdev = 0.1) {
+         const u = 1 - Math.random(); // Converting [0,1) to (0,1]
+         const v = Math.random();
+         const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+         // 
+         return z * stdev + mean;
+         // return 
+      }
+
+      // TODO!: I need to create a function that will linearly map the x and y values to the x and y axis
+      // Current problem with the code, it assumes straight lines, e.g. x_axis has height of 0, y_axis has width of 0
+      function x_axis_limit(x_orig, x_sample) {
+         // I get x + width, convert to location of x axis
+         x0 = x_orig.x
+         x1 = x0 + x_orig.width
+
+         middle_point = x_orig.width / 2
+
+         // map x_sample to values between x0 and x1
+         x = x0 + x_sample * (x1 - x0)
+
+         return x + middle_point;
+      }
+      function y_axis_limit(y_orig, y_sample) {
+         // I get x + width, convert to location of x axis
+         y0 = y_orig.y
+         y1 = y0 + y_orig.height
+
+         middle_point = y_orig.height / 2
+
+         // map x_sample to values between x0 and x1
+         y = y0 + y_sample * (y1 - y0)
+
+         return y + middle_point;
+      }
+      function linspace(start, end, resolution) {
+             var spacing = [];
+             // Go through a for-loop
+             var i;
+             for (i = 0; i < resolution; i++) {
+                 spacing.push(start + (end - start) * i / (resolution - 1))
+             }
+             return spacing; // The function returns the linspace between p1 and p2
+         }
+      function standard_Gaussian_pdf(mean = 0, std = 0.5) {
+         var x = linspace(-3, 3, 201);
+         // Create a dummy variable
+         var result = [];
+         normalize = math.dotDivide(
+            1,
+            math.sqrt(
+               math.dotMultiply(
+                  math.dotMultiply(
+                     2,
+                     math.PI),
+                  math.pow(
+                     std,
+                     2))));
+
+         var i;
+         for (i = 0; i < x.length; i++) {
+            // Evaluate the first element of the Gaussian mixture
+            expon = math.exp(
+               -math.dotDivide(
+                  math.pow(
+                     x[i] - mean,
+                     2),
+                  math.dotMultiply(
+                     2,
+                     math.pow(
+                        std,
+                        2))))
+            temp = math.dotMultiply(
+               normalize,
+               expon)
+            result.push(-temp+0.19) //quick and dirty offset
+         }
+         return result
+      }
+      // First read and add the image
+        const my_svg = new MudeSCI("https://raw.githubusercontent.com/TeachBooks/interactive-figures/refs/heads/main/Images/usable_example.svg");
+
+      // const my_svg = new MudeSCI("C:/Users/rzubavicius/Coding/interactive-figures/Images/usable_example.svg");
+      // const my_svg = new MudeSCI('../Images/usable_example.svg')
+
+      my_svg.image.then(data => {
+         d3.select("#my_datavisualization").node().append(data.documentElement); // append the svg to the div element
+
+         var x_axis = my_svg.x_axis(); // select the path element with id 'x'
+         var y_axis = my_svg.y_axis(); // select the path element with id 'y'
+         var path_g = my_svg.path_g();
+         var whole_svg = my_svg.whole_svg();
+
+         // fancy rainbow color for x axis
+         const timer = d3.timer(() => x_axis.style("stroke", d3.interpolateRainbow(Date.now() / 10000)));
+
+
+         //  Gotta think how do I approach this...
+         var get_text_id = d3.select('text#text2060');
+         var get_text_id1 = d3.select('text#text2048');
+
+         function change_text(text) {
+            get_text_id.text(text)
+         }
+
+         function change_text1(text) {
+            get_text_id1.text(text)
+         }
+
+         function i_am_lost(mean){ // How do I attach the second slider?? TODO!
+            data = standard_Gaussian_pdf(mean-70,0.5)
+            my_svg.line_plot(data, path_g, x_axis, y_axis)
+            get_text_id.text(mean.toString());
+         }
+         
+
+         my_svg.create_slider(whole_svg, path_g, x_axis, y_axis, 0.3, 0.2, i_am_lost);
+         // my_svg.create_slider(whole_svg, path_g, x_axis, y_axis, 0.5, 0.5, change_text1);
+
+
+         //  console.log(my_svg.slider_data());
+         // console.log(my_svg.x_axis().node());
+
+
+      }); //appends the svg (document) to the selected div element...
+
+      // Some key points:
+      // 1. I think I am using a newer d3 version... originally they said path_el should be adjusted via path_el.attr(...)
+      // 2. using then key word loads the image asynchronously... hence why the timer is also within then keyword now
+      // 3. Gotta have 'wait_for_svg' function perhaps...
+
+      // I can do d3.select('svg').node() which returns the svg image...
+   </script>
+</body>
+
+</html>
