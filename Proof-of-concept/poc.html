@@ -1,17 +1,7 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-   <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>
-   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script> -->
    <script src="https://d3js.org/d3.v7.min.js"></script>
-
-   <script type="text/javascript" src="./interactive-figures.js"></script>
-
-   <!-- <script type="text/javascript" src="./math.js"></script>
-
-   <script type="text/javascript" src="./d3.v7.min.js"></script> -->
-
 
    <style>
       body {
@@ -50,39 +40,25 @@
    </style>
 </head>
 
-</div>
-
 <body>
-   <!-- Main div for visualization -->
    <div id="my_datavisualization"></div>
 
-   <div id="density_contours" style="width: 300px; height: 300px;"></div>
-   <div id="samples_plot" style="width: 300px; height: 300px;"></div>
-
    <div class="slider-container">
-      <!-- Mean sliders -->
       <div class="slider-label">Mean of X1</div>
       <input id="meanX1" class="slider" type="range" min="-2" max="2" step="0.1" value="0">
       <div class="slider-label">Mean of X2</div>
       <input id="meanX2" class="slider" type="range" min="-2" max="2" step="0.1" value="0">
 
-      <!-- Standard deviation sliders -->
       <div class="slider-label">Standard deviation of X1</div>
       <input id="stdX1" class="slider" type="range" min="0.1" max="2" step="0.1" value="1">
       <div class="slider-label">Standard deviation of X2</div>
       <input id="stdX2" class="slider" type="range" min="0.1" max="2" step="0.1" value="1">
 
-      <!-- Correlation slider -->
       <div class="slider-label">Correlation</div>
       <input id="correlation" class="slider" type="range" min="-1" max="1" step="0.01" value="0">
    </div>
 
    <script>
-      // SVG dimensions
-      const width = 300;
-      const height = 300;
-      const margin = { top: 20, right: 20, bottom: 20, left: 20 };
-
       // Initial parameters for Gaussian distribution
       let params = {
          meanX1: 0,
@@ -92,22 +68,21 @@
          correlation: 0
       };
 
-      // Create SVG containers
-      const densitySVG = d3.select("#density_contours")
-         .append("svg")
-         .attr("width", width)
-         .attr("height", height);
+      // Load the SVG with two xy graphs directly with D3
+      d3.xml("https://raw.githubusercontent.com/TeachBooks/interactive-figures/refs/heads/main/Images/usable_example.svg").then(data => {
+         const importedSVG = data.documentElement;
+         d3.select("#my_datavisualization").node().appendChild(importedSVG);
 
-      const samplesSVG = d3.select("#samples_plot")
-         .append("svg")
-         .attr("width", width)
-         .attr("height", height);
+         // Create a D3 selection for the inner group (g) element within the SVG
+         const svgGroup = d3.select(importedSVG).select("g");
 
-      // First read and add the image
-      const my_svg = new MudeSCI("https://raw.githubusercontent.com/TeachBooks/interactive-figures/refs/heads/main/Images/usable_example.svg");
-      my_svg.image.then(data => {
-         d3.select("#my_datavisualization").node().append(data.documentElement); // append the svg to the div element
-         updatePlot();
+         // Determine the bounding box of the SVG to use for scaling
+         const bbox = svgGroup.node().getBBox();
+         const xScale = d3.scaleLinear().domain([-10, 10]).range([bbox.x, bbox.x + bbox.width]);
+         const yScale = d3.scaleLinear().domain([-5, 5]).range([bbox.y + bbox.height, bbox.y]);
+
+         // Initial plot rendering
+         updatePlot(svgGroup, xScale, yScale);
       });
 
       // Function to generate Gaussian data points
@@ -126,56 +101,55 @@
       }
 
       // Function to update the plot based on slider values
-      function updatePlot() {
+      function updatePlot(svgGroup, xScale, yScale) {
          const points = generateGaussianPoints(
             params.meanX1, params.meanX2, params.stdX1, params.stdX2, params.correlation
          );
 
-         // Select the imported SVG and clear previous points
-         d3.select("#samples_plot svg").selectAll("circle").remove();
+         // Clear previous points
+         svgGroup.selectAll("circle").remove();
 
-         // Update scales to match your SVG axis range
-         const xScale = d3.scaleLinear().domain([-10, 10]).range([margin.left, width - margin.right]);
-         const yScale = d3.scaleLinear().domain([-5, 5]).range([height - margin.bottom, margin.top]);
-
-         // Overlay new points onto the SVG
-         d3.select("#samples_plot svg")
+         // Append new points onto the SVG with the axis
+         svgGroup
             .selectAll("circle")
             .data(points)
             .enter()
             .append("circle")
             .attr("cx", d => xScale(d.x1))
             .attr("cy", d => yScale(d.x2))
-            .attr("r", 3)
+            .attr("r", 0.5)
             .attr("fill", "blue");
       }
 
-
-      // Initial plot rendering
-      updatePlot();
-
       // Slider event listeners to update parameters and plot
+      function updateScatterPlot() {
+         const svgGroup = d3.select("#my_datavisualization svg g");
+         const bbox = svgGroup.node().getBBox();
+         const xScale = d3.scaleLinear().domain([-10, 10]).range([bbox.x, bbox.x + bbox.width]);
+         const yScale = d3.scaleLinear().domain([-5, 5]).range([bbox.y + bbox.height, bbox.y]);
+         updatePlot(svgGroup, xScale, yScale);
+      }
+
       d3.select("#meanX1").on("input", function () {
          params.meanX1 = +this.value;
-         updatePlot();
+         updateScatterPlot();
       });
       d3.select("#meanX2").on("input", function () {
          params.meanX2 = +this.value;
-         updatePlot();
+         updateScatterPlot();
       });
       d3.select("#stdX1").on("input", function () {
          params.stdX1 = +this.value;
-         updatePlot();
+         updateScatterPlot();
       });
       d3.select("#stdX2").on("input", function () {
          params.stdX2 = +this.value;
-         updatePlot();
+         updateScatterPlot();
       });
       d3.select("#correlation").on("input", function () {
          params.correlation = +this.value;
-         updatePlot();
+         updateScatterPlot();
       });
    </script>
 </body>
-
 </html>
