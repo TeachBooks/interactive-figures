@@ -44,19 +44,22 @@
    <div id="my_datavisualization"></div>
 
    <div class="slider-container">
-      <div class="slider-label">Mean of X1</div>
-      <input id="meanX1" class="slider" type="range" min="-2" max="2" step="0.1" value="0">
-      <div class="slider-label">Mean of X2</div>
-      <input id="meanX2" class="slider" type="range" min="-2" max="2" step="0.1" value="0">
+       <div class="slider-label">Mean of X1</div>
+       <input id="meanX1" class="slider" type="range" min="-2" max="2" step="0.1" value="0">
 
-      <div class="slider-label">Standard deviation of X1</div>
-      <input id="stdX1" class="slider" type="range" min="0.1" max="2" step="0.1" value="1">
-      <div class="slider-label">Standard deviation of X2</div>
-      <input id="stdX2" class="slider" type="range" min="0.1" max="2" step="0.1" value="1">
+       <div class="slider-label">Mean of X2</div>
+       <input id="meanX2" class="slider" type="range" min="-2" max="2" step="0.1" value="0">
 
-      <div class="slider-label">Correlation</div>
-      <input id="correlation" class="slider" type="range" min="-1" max="1" step="0.01" value="0">
+       <div class="slider-label">Standard deviation of X1</div>
+       <input id="stdX1" class="slider" type="range" min="0.1" max="2" step="0.1" value="1">
+
+       <div class="slider-label">Standard deviation of X2</div>
+       <input id="stdX2" class="slider" type="range" min="0.1" max="2" step="0.1" value="1">
+
+       <div class="slider-label">Correlation</div>
+       <input id="correlation" class="slider" type="range" min="-1" max="1" step="0.01" value="0">
    </div>
+
 
    <script>
       // Initial parameters for Gaussian distribution
@@ -76,14 +79,108 @@
          // Create a D3 selection for the inner group (g) element within the SVG
          const svgGroup = d3.select(importedSVG).select("g");
 
-         // Determine the bounding box of the SVG to use for scaling
+         // Create text elements for displaying mean and standard deviations
+         const meanDisplay = svgGroup.append("text")
+           .attr("id", "meanDisplay")
+           .attr("x", 86.6)
+           .attr("y", 131.6)
+           .style("font-size", "2.11667px")
+           .style("fill", "black");
+
+         const sigma1Display = svgGroup.append("text")
+           .attr("id", "sigma1Display")
+           .attr("x", 90)
+           .attr("y", 135.5)
+           .style("font-size", "2.11667px")
+           .style("fill", "black");
+
+         const sigma2Display = svgGroup.append("text")
+           .attr("id", "sigma2Display")
+           .attr("x", 90)
+           .attr("y", 139.5)
+           .style("font-size", "2.11667px")
+           .style("fill", "black");
+
+
+
+         // Set the scales based on initial bounding box
          const bbox = svgGroup.node().getBBox();
-         const xScale = d3.scaleLinear().domain([-10, 10]).range([bbox.x, bbox.x + bbox.width]);
+         const xScale = d3.scaleLinear().domain([-5, 5]).range([bbox.x, bbox.x + bbox.width]);
          const yScale = d3.scaleLinear().domain([-5, 5]).range([bbox.y + bbox.height, bbox.y]);
 
          // Initial plot rendering
          updatePlot(svgGroup, xScale, yScale);
+
+         // Slider event listeners to update parameters and plot
+         d3.select("#meanX1").on("input", function() {
+            params.meanX1 = +this.value;
+            updatePlot(svgGroup, xScale, yScale);
+         });
+         d3.select("#meanX2").on("input", function() {
+            params.meanX2 = +this.value;
+            updatePlot(svgGroup, xScale, yScale);
+         });
+         d3.select("#stdX1").on("input", function() {
+            params.stdX1 = +this.value;
+            updatePlot(svgGroup, xScale, yScale);
+         });
+         d3.select("#stdX2").on("input", function() {
+            params.stdX2 = +this.value;
+            updatePlot(svgGroup, xScale, yScale);
+         });
+         d3.select("#correlation").on("input", function() {
+            params.correlation = +this.value;
+            updatePlot(svgGroup, xScale, yScale);
+         });
       });
+
+      // Function to update the plot based on slider values
+      // Function to update the plot based on slider values
+      function updatePlot(svgGroup, xScale, yScale) {
+        const points = generateGaussianPoints(
+          params.meanX1, params.meanX2, params.stdX1, params.stdX2, params.correlation
+        );
+
+        // Clear previous points
+        svgGroup.selectAll("circle").remove();
+
+        // Append new points onto the SVG with the axis
+        svgGroup
+          .selectAll("circle")
+          .data(points)
+          .enter()
+          .append("circle")
+          .attr("cx", d => xScale(d.x1))
+          .attr("cy", d => yScale(d.x2))
+          .attr("r", 0.5)
+          .attr("fill", "blue");
+
+        // Calculate statistics and update display
+        const stats = calculateStatistics(points);
+        updateTextContent(stats);
+
+        // Update the axes after adding new points
+        svgGroup.select(".x.axis").call(d3.axisBottom(xScale));
+        svgGroup.select(".y.axis").call(d3.axisLeft(yScale));
+      }
+
+      function updateTextContent(stats) {
+        d3.select("#meanDisplay")
+          .text(`${stats.meanX1.toFixed(2)}, ${stats.meanX2.toFixed(2)}`);
+        d3.select("#sigma1Display")
+          .text(`${stats.stdX1.toFixed(2)}`);
+        d3.select("#sigma2Display")
+          .text(`${stats.stdX2.toFixed(2)}`);
+      }
+
+      function calculateStatistics(points) {
+        const meanX1 = d3.mean(points, d => d.x1);
+        const meanX2 = d3.mean(points, d => d.x2);
+        const stdX1 = Math.sqrt(d3.variance(points, d => d.x1));
+        const stdX2 = Math.sqrt(d3.variance(points, d => d.x2));
+        return { meanX1, meanX2, stdX1, stdX2 };
+      }
+
 
       // Function to generate Gaussian data points
       function generateGaussianPoints(meanX1, meanX2, stdX1, stdX2, correlation, numPoints = 100) {
@@ -100,56 +197,50 @@
          return points;
       }
 
-      // Function to update the plot based on slider values
-      function updatePlot(svgGroup, xScale, yScale) {
-         const points = generateGaussianPoints(
-            params.meanX1, params.meanX2, params.stdX1, params.stdX2, params.correlation
-         );
-
-         // Clear previous points
-         svgGroup.selectAll("circle").remove();
-
-         // Append new points onto the SVG with the axis
-         svgGroup
-            .selectAll("circle")
-            .data(points)
-            .enter()
-            .append("circle")
-            .attr("cx", d => xScale(d.x1))
-            .attr("cy", d => yScale(d.x2))
-            .attr("r", 0.5)
-            .attr("fill", "blue");
+      // Function to calculate mean and standard deviation
+      function calculateStatistics(points) {
+         const meanX1 = d3.mean(points, d => d.x1);
+         const meanX2 = d3.mean(points, d => d.x2);
+         const stdX1 = Math.sqrt(d3.variance(points, d => d.x1));
+         const stdX2 = Math.sqrt(d3.variance(points, d => d.x2));
+         return { meanX1, meanX2, stdX1, stdX2 };
       }
 
       // Slider event listeners to update parameters and plot
-      function updateScatterPlot() {
+      // Slider event listeners to update parameters and plot
+      d3.select("#meanX1").on("input", function () {
+          params.meanX1 = +this.value;
+          d3.select("#meanX1Value").text(this.value); // Update displayed value
+          updatePlotAndRescale();
+      });
+      d3.select("#meanX2").on("input", function () {
+          params.meanX2 = +this.value;
+          d3.select("#meanX2Value").text(this.value); // Update displayed value
+          updatePlotAndRescale();
+      });
+      d3.select("#stdX1").on("input", function () {
+          params.stdX1 = +this.value;
+          d3.select("#stdX1Value").text(this.value); // Update displayed value
+          updatePlotAndRescale();
+      });
+      d3.select("#stdX2").on("input", function () {
+          params.stdX2 = +this.value;
+          d3.select("#stdX2Value").text(this.value); // Update displayed value
+          updatePlotAndRescale();
+      });
+      d3.select("#correlation").on("input", function () {
+          params.correlation = +this.value;
+          d3.select("#correlationValue").text(this.value); // Update displayed value
+          updatePlotAndRescale();
+      });
+
+
+      function updatePlotAndRescale() {
          const svgGroup = d3.select("#my_datavisualization svg g");
          const bbox = svgGroup.node().getBBox();
          const xScale = d3.scaleLinear().domain([-10, 10]).range([bbox.x, bbox.x + bbox.width]);
          const yScale = d3.scaleLinear().domain([-5, 5]).range([bbox.y + bbox.height, bbox.y]);
          updatePlot(svgGroup, xScale, yScale);
       }
-
-      d3.select("#meanX1").on("input", function () {
-         params.meanX1 = +this.value;
-         updateScatterPlot();
-      });
-      d3.select("#meanX2").on("input", function () {
-         params.meanX2 = +this.value;
-         updateScatterPlot();
-      });
-      d3.select("#stdX1").on("input", function () {
-         params.stdX1 = +this.value;
-         updateScatterPlot();
-      });
-      d3.select("#stdX2").on("input", function () {
-         params.stdX2 = +this.value;
-         updateScatterPlot();
-      });
-      d3.select("#correlation").on("input", function () {
-         params.correlation = +this.value;
-         updateScatterPlot();
-      });
    </script>
 </body>
-</html>
