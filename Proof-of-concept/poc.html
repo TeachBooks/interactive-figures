@@ -172,7 +172,7 @@
 
          // Set the scales based on initial bounding box
          const bbox = svgGroup.node().getBBox();
-         const xScale = d3.scaleLinear().domain([-10, 10]).range([bbox.x, bbox.x + bbox.width]);
+         const xScale = d3.scaleLinear().domain([-5, 5]).range([bbox.x, bbox.x + bbox.width]);
          const yScale = d3.scaleLinear().domain([-5, 5]).range([bbox.y + bbox.height, bbox.y]);
 
          // Initial plot rendering
@@ -201,15 +201,6 @@
          });
       });
 
-       function updateMatrixValues(svgGroup) {
-            // Update the text elements for the matrix
-        d3.select(svgGroup).select("#text2048").text("01"); // Change value of loc-00
-        d3.select(svgGroup).select("#text2052").text("12"); // Change value of loc-11
-        d3.select(svgGroup).select("#text2056").text("21"); // Change value of loc-01
-        d3.select(svgGroup).select("#text2060").text("10"); // Change value of loc-10
-       }
-
-      // Function to update the plot based on slider values
       // Function to update the plot based on slider values
       function updatePlot(svgGroup, xScale, yScale) {
         const points = generateGaussianPoints(
@@ -227,8 +218,8 @@
           .append("circle")
           .attr("cx", d => xScale(d.x1))
           .attr("cy", d => yScale(d.x2))
-          .attr("r", 0.5)
-          .attr("fill", "blue");
+          .attr("r", 0.3)
+          .attr("fill", "blue")
 
         // Calculate statistics and update display
         const stats = calculateStatistics(points);
@@ -305,36 +296,23 @@
       d3.select("#meanX1").on("input", function () {
           params.meanX1 = +this.value;
           d3.select("#meanX1Value").text(this.value); // Update displayed value
-          updatePlotAndRescale();
       });
       d3.select("#meanX2").on("input", function () {
           params.meanX2 = +this.value;
           d3.select("#meanX2Value").text(this.value); // Update displayed value
-          updatePlotAndRescale();
       });
       d3.select("#stdX1").on("input", function () {
           params.stdX1 = +this.value;
           d3.select("#stdX1Value").text(this.value); // Update displayed value
-          updatePlotAndRescale();
       });
       d3.select("#stdX2").on("input", function () {
           params.stdX2 = +this.value;
           d3.select("#stdX2Value").text(this.value); // Update displayed value
-          updatePlotAndRescale();
       });
       d3.select("#correlation").on("input", function () {
           params.correlation = +this.value;
           d3.select("#correlationValue").text(this.value); // Update displayed value
-          updatePlotAndRescale();
       });
 
-
-      function updatePlotAndRescale() {
-         const svgGroup = d3.select("#my_datavisualization svg g");
-         const bbox = svgGroup.node().getBBox();
-         const xScale = d3.scaleLinear().domain([-10, 10]).range([bbox.x, bbox.x + bbox.width]);
-         const yScale = d3.scaleLinear().domain([-5, 5]).range([bbox.y + bbox.height, bbox.y]);
-         updatePlot(svgGroup, xScale, yScale);
-      }
    </script>
 </body>
