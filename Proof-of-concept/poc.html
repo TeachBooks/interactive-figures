@@ -224,10 +224,6 @@
         // Calculate statistics and update display
         const stats = calculateStatistics(points);
 
-        // Debug log to check values
-        console.log("Stats:", stats);
-        console.log("Params:", params);
-
         updateTextContent(stats);
       }
 
@@ -243,8 +239,6 @@
 
 
       function updateTextContent(stats) {
-           console.log("Updating text content with stats:", stats);
-
           // Update means display
           d3.select("#meanDisplay")
             .text(`${stats.meanX1.toFixed(2)}, ${stats.meanX2.toFixed(2)}`);
