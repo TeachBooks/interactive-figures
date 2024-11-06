@@ -105,7 +105,7 @@
 
          // Set the scales based on initial bounding box
          const bbox = svgGroup.node().getBBox();
-         const xScale = d3.scaleLinear().domain([-5, 5]).range([bbox.x, bbox.x + bbox.width]);
+         const xScale = d3.scaleLinear().domain([-10, 10]).range([bbox.x, bbox.x + bbox.width]);
          const yScale = d3.scaleLinear().domain([-5, 5]).range([bbox.y + bbox.height, bbox.y]);
 
          // Initial plot rendering
@@ -134,6 +134,14 @@
          });
       });
 
+       function updateMatrixValues(svgGroup) {
+            // Update the text elements for the matrix
+        d3.select(svgGroup).select("#text2048").text("01"); // Change value of loc-00
+        d3.select(svgGroup).select("#text2052").text("12"); // Change value of loc-11
+        d3.select(svgGroup).select("#text2056").text("21"); // Change value of loc-01
+        d3.select(svgGroup).select("#text2060").text("10"); // Change value of loc-10
+       }
+
       // Function to update the plot based on slider values
       // Function to update the plot based on slider values
       function updatePlot(svgGroup, xScale, yScale) {
@@ -157,29 +165,59 @@
 
         // Calculate statistics and update display
         const stats = calculateStatistics(points);
+
+        // Debug log to check values
+        console.log("Stats:", stats);
+        console.log("Params:", params);
+
         updateTextContent(stats);
-
-        // Update the axes after adding new points
-        svgGroup.select(".x.axis").call(d3.axisBottom(xScale));
-        svgGroup.select(".y.axis").call(d3.axisLeft(yScale));
       }
 
-      function updateTextContent(stats) {
-        d3.select("#meanDisplay")
-          .text(`${stats.meanX1.toFixed(2)}, ${stats.meanX2.toFixed(2)}`);
-        d3.select("#sigma1Display")
-          .text(`${stats.stdX1.toFixed(2)}`);
-        d3.select("#sigma2Display")
-          .text(`${stats.stdX2.toFixed(2)}`);
-      }
 
       function calculateStatistics(points) {
-        const meanX1 = d3.mean(points, d => d.x1);
-        const meanX2 = d3.mean(points, d => d.x2);
-        const stdX1 = Math.sqrt(d3.variance(points, d => d.x1));
-        const stdX2 = Math.sqrt(d3.variance(points, d => d.x2));
-        return { meanX1, meanX2, stdX1, stdX2 };
+          const meanX1 = d3.mean(points, d => d.x1);
+          const meanX2 = d3.mean(points, d => d.x2);
+          const stdX1 = Math.sqrt(d3.variance(points, d => d.x1));
+          const stdX2 = Math.sqrt(d3.variance(points, d => d.x2));
+          // Make sure we return the correlation parameter from the global params
+          return { meanX1, meanX2, stdX1, stdX2, correlation: params.correlation };
       }
+
+
+      function updateTextContent(stats) {
+           console.log("Updating text content with stats:", stats);
+
+          // Update means display
+          d3.select("#meanDisplay")
+            .text(`${stats.meanX1.toFixed(2)}, ${stats.meanX2.toFixed(2)}`);
+
+          // Update standard deviation display
+          d3.select("#sigma1Display")
+            .text(`${stats.stdX1.toFixed(2)}`);
+          d3.select("#sigma2Display")
+            .text(`${stats.stdX2.toFixed(2)}`);
+
+          // Calculate covariance matrix elements based on current stats
+          const sigmaX1Sq = Math.pow(stats.stdX1, 2);
+          const sigmaX2Sq = Math.pow(stats.stdX2, 2);
+          const covX1X2 = stats.correlation * stats.stdX1 * stats.stdX2;
+
+          console.log("Matrix values:", {
+            sigmaX1Sq,
+            sigmaX2Sq,
+            covX1X2,
+            correlation: stats.correlation,
+            stdX1: stats.stdX1,
+            stdX2: stats.stdX2
+        });
+
+          // Update covariance matrix values in the SVG
+          d3.select("#text2048").text(sigmaX1Sq.toFixed(2));   // loc-00: σ(X1)^2
+          d3.select("#text2052").text(sigmaX2Sq.toFixed(2));   // loc-11: σ(X2)^2
+          d3.select("#text2056").text(covX1X2.toFixed(2));     // loc-01: ρ * σ(X1) * σ(X2)
+          d3.select("#text2060").text(covX1X2.toFixed(2));     // loc-10: ρ * σ(X1) * σ(X2)
+      }
+
 
 
       // Function to generate Gaussian data points
@@ -197,16 +235,6 @@
          return points;
       }
 
-      // Function to calculate mean and standard deviation
-      function calculateStatistics(points) {
-         const meanX1 = d3.mean(points, d => d.x1);
-         const meanX2 = d3.mean(points, d => d.x2);
-         const stdX1 = Math.sqrt(d3.variance(points, d => d.x1));
-         const stdX2 = Math.sqrt(d3.variance(points, d => d.x2));
-         return { meanX1, meanX2, stdX1, stdX2 };
-      }
-
-      // Slider event listeners to update parameters and plot
       // Slider event listeners to update parameters and plot
       d3.select("#meanX1").on("input", function () {
           params.meanX1 = +this.value;
