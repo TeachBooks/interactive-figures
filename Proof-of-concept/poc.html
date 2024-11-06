@@ -146,6 +146,11 @@
          // Create a D3 selection for the inner group (g) element within the SVG
          const svgGroup = d3.select(importedSVG).select("g");
 
+         // Set the scales based on initial bounding box
+         const bbox = svgGroup.node().getBBox();
+         const xScale = d3.scaleLinear().domain([-5, 5]).range([bbox.x, bbox.x + bbox.width]);
+         const yScale = d3.scaleLinear().domain([-5, 5]).range([bbox.y + bbox.height, bbox.y]);
+
          // Create text elements for displaying mean and standard deviations
          const meanDisplay = svgGroup.append("text")
            .attr("id", "meanDisplay")
@@ -167,13 +172,6 @@
            .attr("y", 139.5)
            .style("font-size", "2.11667px")
            .style("fill", "black");
-
-
-
-         // Set the scales based on initial bounding box
-         const bbox = svgGroup.node().getBBox();
-         const xScale = d3.scaleLinear().domain([-5, 5]).range([bbox.x, bbox.x + bbox.width]);
-         const yScale = d3.scaleLinear().domain([-5, 5]).range([bbox.y + bbox.height, bbox.y]);
 
          // Initial plot rendering
          updatePlot(svgGroup, xScale, yScale);
@@ -202,88 +200,127 @@
       });
 
       // Function to update the plot based on slider values
-      function updatePlot(svgGroup, xScale, yScale) {
-        const points = generateGaussianPoints(
-          params.meanX1, params.meanX2, params.stdX1, params.stdX2, params.correlation
-        );
+       function updatePlot(svgGroup, xScale, yScale) {
+          // Clear previous elements
+          svgGroup.selectAll("circle.sample-point").remove();
+          svgGroup.selectAll(".contour-element").remove();
 
-        // Clear previous points
-        svgGroup.selectAll("circle").remove();
+          // Draw the density contour points and lines
+          const contourPoints = [
+              // Central point
+              {x1: params.meanX1, x2: params.meanX2, color: "red"},
+              // Points along the principal axes
+              {x1: params.meanX1 + params.stdX1, x2: params.meanX2, color: "blue"},
+              {x1: params.meanX1 - params.stdX1, x2: params.meanX2, color: "gray"},
+              {x1: params.meanX1, x2: params.meanX2 + params.stdX2, color: "yellow"},
+              {x1: params.meanX1, x2: params.meanX2 - params.stdX2, color: "green"}
+          ];
 
-        // Append new points onto the SVG with the axis
-        svgGroup
-          .selectAll("circle")
-          .data(points)
-          .enter()
-          .append("circle")
-          .attr("cx", d => xScale(d.x1))
-          .attr("cy", d => yScale(d.x2))
-          .attr("r", 0.3)
-          .attr("fill", "blue")
+          // Draw contour lines first (so they appear behind points)
+          const lineGenerator = d3.line()
+              .x(d => xScale(d.x1))
+              .y(d => yScale(d.x2))
+              .curve(d3.curveBasis);
 
-        // Calculate statistics and update display
-        const stats = calculateStatistics(points);
+          // Draw horizontal line
+          svgGroup.append("path")
+              .attr("class", "contour-element")
+              .attr("d", lineGenerator([
+                  {x1: params.meanX1 - params.stdX1, x2: params.meanX2},
+                  {x1: params.meanX1 + params.stdX1, x2: params.meanX2}
+              ]))
+              .attr("stroke", "gray")
+              .attr("fill", "none")
+              .attr("stroke-width", "0.2");
 
-        updateTextContent(stats);
+          // Draw curved vertical line
+          const verticalCurvePoints = [];
+          for (let t = -1; t <= 1; t += 0.1) {
+              verticalCurvePoints.push({
+                  x1: params.meanX1 + (params.correlation * params.stdX1 * t),
+                  x2: params.meanX2 + (params.stdX2 * t)
+              });
+          }
+
+          svgGroup.append("path")
+              .attr("class", "contour-element")
+              .attr("d", lineGenerator(verticalCurvePoints))
+              .attr("stroke", "gray")
+              .attr("fill", "none")
+              .attr("stroke-width", "0.2");
+
+          // Draw contour points
+          svgGroup.selectAll(".contour-point")
+              .data(contourPoints)
+              .enter()
+              .append("circle")
+              .attr("class", "contour-element")
+              .attr("cx", d => xScale(d.x1))
+              .attr("cy", d => yScale(d.x2))
+              .attr("r", 0.5)
+              .attr("fill", d => d.color);
+
+          // Generate and draw sample points for the second graph
+          const points = generateGaussianPoints(
+              params.meanX1, params.meanX2,
+              params.stdX1, params.stdX2,
+              params.correlation
+          );
+
+          // Draw sample points
+          svgGroup.selectAll("circle.sample-point")
+              .data(points)
+              .enter()
+              .append("circle")
+              .attr("class", "sample-point")
+              .attr("cx", d => xScale(d.x1))
+              .attr("cy", d => yScale(d.x2))
+              .attr("r", 0.3)
+              .attr("fill", "rgba(0, 0, 0, 0.5)");
+
+          // Update statistics display
+          const stats = calculateStatistics(points);
+          updateTextContent(stats);
       }
-
-
       function calculateStatistics(points) {
-          const meanX1 = d3.mean(points, d => d.x1);
-          const meanX2 = d3.mean(points, d => d.x2);
-          const stdX1 = Math.sqrt(d3.variance(points, d => d.x1));
-          const stdX2 = Math.sqrt(d3.variance(points, d => d.x2));
-          // Make sure we return the correlation parameter from the global params
-          return { meanX1, meanX2, stdX1, stdX2, correlation: params.correlation };
+        const meanX1 = d3.mean(points, d => d.x1);
+        const meanX2 = d3.mean(points, d => d.x2);
+        const stdX1 = Math.sqrt(d3.variance(points, d => d.x1));
+        const stdX2 = Math.sqrt(d3.variance(points, d => d.x2));
+        return { meanX1, meanX2, stdX1, stdX2, correlation: params.correlation };
       }
-
 
       function updateTextContent(stats) {
-          // Update means display
-          d3.select("#meanDisplay")
-            .text(`${stats.meanX1.toFixed(2)}, ${stats.meanX2.toFixed(2)}`);
+        d3.select("#meanDisplay")
+          .text(`${stats.meanX1.toFixed(2)}, ${stats.meanX2.toFixed(2)}`);
 
-          // Update standard deviation display
-          d3.select("#sigma1Display")
-            .text(`${stats.stdX1.toFixed(2)}`);
-          d3.select("#sigma2Display")
-            .text(`${stats.stdX2.toFixed(2)}`);
+        d3.select("#sigma1Display")
+          .text(`${stats.stdX1.toFixed(2)}`);
+        d3.select("#sigma2Display")
+          .text(`${stats.stdX2.toFixed(2)}`);
 
-          // Calculate covariance matrix elements based on current stats
-          const sigmaX1Sq = Math.pow(stats.stdX1, 2);
-          const sigmaX2Sq = Math.pow(stats.stdX2, 2);
-          const covX1X2 = stats.correlation * stats.stdX1 * stats.stdX2;
+        const sigmaX1Sq = Math.pow(stats.stdX1, 2);
+        const sigmaX2Sq = Math.pow(stats.stdX2, 2);
+        const covX1X2 = stats.correlation * stats.stdX1 * stats.stdX2;
 
-          console.log("Matrix values:", {
-            sigmaX1Sq,
-            sigmaX2Sq,
-            covX1X2,
-            correlation: stats.correlation,
-            stdX1: stats.stdX1,
-            stdX2: stats.stdX2
-        });
-
-          // Update covariance matrix values in the SVG
-          d3.select("#text2048").text(sigmaX1Sq.toFixed(2));   // loc-00: σ(X1)^2
-          d3.select("#text2052").text(sigmaX2Sq.toFixed(2));   // loc-11: σ(X2)^2
-          d3.select("#text2056").text(covX1X2.toFixed(2));     // loc-01: ρ * σ(X1) * σ(X2)
-          d3.select("#text2060").text(covX1X2.toFixed(2));     // loc-10: ρ * σ(X1) * σ(X2)
+        d3.select("#text2048").text(sigmaX1Sq.toFixed(2));
+        d3.select("#text2052").text(sigmaX2Sq.toFixed(2));
+        d3.select("#text2056").text(covX1X2.toFixed(2));
+        d3.select("#text2060").text(covX1X2.toFixed(2));
       }
 
-
-      // Function to generate Gaussian data points
       function generateGaussianPoints(meanX1, meanX2, stdX1, stdX2, correlation, numPoints = 100) {
-         const points = [];
-         for (let i = 0; i < numPoints; i++) {
-            const u1 = Math.random();
-            const u2 = Math.random();
-            const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-            const z1 = Math.sqrt(-2.0 * Math.log(u1)) * Math.sin(2.0 * Math.PI * u2);
-            const x1 = meanX1 + stdX1 * z0;
-            const x2 = meanX2 + stdX2 * (correlation * z0 + Math.sqrt(1 - correlation ** 2) * z1);
-            points.push({ x1, x2 });
-         }
-         return points;
+        const points = [];
+        for (let i = 0; i < numPoints; i++) {
+          const u1 = Math.random();
+          const u2 = Math.random();
+          const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+          const z1 = Math.sqrt(-2.0 * Math.log(u1)) * Math.sin(2.0 * Math.PI * u2);
+          const x1 = meanX1 + stdX1 * z0;
+          const x2 = meanX2 + stdX2 * (correlation * z0 + Math.sqrt(1 - correlation ** 2) * z1);
+          points.push({ x1, x2 });
+        }
+        return points;
       }
 
       // Slider event listeners to update parameters and plot
