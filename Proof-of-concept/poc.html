@@ -158,7 +158,60 @@
         .style("font-size", "2px")
         .style("fill", "black")
         .text("samples");
-}
+    }
+
+    function addAxisTicks(graph, xScale, yScale, xPos, yPos, isFirstGraph = false) {
+        const tickValues = [-4, -2, 0, 2, 4];
+
+        // Add extra padding for the first graph's y-axis
+        const yAxisPadding = isFirstGraph ? 3 : 0;
+        const xLabelOffset = 2.5; // Increased vertical spacing for x-axis labels
+
+        // Add X-axis ticks
+        tickValues.forEach(tick => {
+            // Add tick mark
+            graph.append("line")
+                .attr("class", "tick")
+                .attr("x1", xScale(tick))
+                .attr("y1", yPos)
+                .attr("x2", xScale(tick))
+                .attr("y2", yPos + 0.5)
+                .attr("stroke", "black")
+                .attr("stroke-width", "0.1");
+
+            // Add tick label with more vertical spacing
+            graph.append("text")
+                .attr("class", "tick-label")
+                .attr("x", xScale(tick))
+                .attr("y", yPos + xLabelOffset)  // Increased spacing
+                .attr("text-anchor", "middle")
+                .style("font-size", "1.5px")
+                .text(tick);
+        });
+
+        // Add Y-axis ticks with extra padding for first graph
+        tickValues.forEach(tick => {
+            // Add tick mark
+            graph.append("line")
+                .attr("class", "tick")
+                .attr("x1", xPos - yAxisPadding)
+                .attr("y1", yScale(tick))
+                .attr("x2", xPos - yAxisPadding - 0.5)
+                .attr("y2", yScale(tick))
+                .attr("stroke", "black")
+                .attr("stroke-width", "0.1");
+
+            // Add tick label with extra padding for first graph
+            graph.append("text")
+                .attr("class", "tick-label")
+                .attr("x", xPos - yAxisPadding - 1)
+                .attr("y", yScale(tick))
+                .attr("text-anchor", "end")
+                .attr("dominant-baseline", "middle")
+                .style("font-size", "1.5px")
+                .text(tick);
+        });
+    }
 
     // Load the SVG with two xy graphs directly with D3
     d3.xml("https://raw.githubusercontent.com/TeachBooks/interactive-figures/refs/heads/main/Images/usable_example.svg").then(data => {
@@ -167,7 +220,9 @@
 
         // Create D3 selections for both graph groups
         const firstGraph = d3.select(importedSVG).select("#layer2"); // First xy graph
+        firstGraph.attr("transform", "translate(-18,-130)");
         const secondGraph = d3.select(importedSVG).select("#layer1"); // Second xy graph
+        secondGraph.attr("transform", "translate(-18,-130)");
 
         addLegends(firstGraph, secondGraph);
 
@@ -200,6 +255,16 @@
 
         // Create or select mean and sigma display elements
         textGroup.selectAll(".stat-value").remove();  // Remove old values if they exist
+
+        // Get base positions for ticks from the paths
+        const firstGraphBase = firstGraphPath.node().getBBox();
+        const secondGraphBase = yPath.node().getBBox();
+
+        // Add ticks to both graphs
+        addAxisTicks(firstGraph, firstXScale, firstYScale,
+                    firstGraphBase.x, firstGraphBase.y + firstGraphBase.height);
+        addAxisTicks(secondGraph, secondXScale, secondYScale,
+                    secondGraphBase.x, xBBox.y);
 
         const meanText = textGroup.append("text")
             .attr("class", "stat-value")
@@ -298,6 +363,9 @@
             // Clear previous elements
             firstGraph.selectAll(".contour-element").remove();
             secondGraph.selectAll(".sample-point").remove();
+
+            firstGraph.selectAll(".graph-title, .tick, .tick-label").raise();
+            secondGraph.selectAll(".graph-title, .tick, .tick-label").raise();
 
             // Generate and draw contour paths
             const contourPaths = generateContours(params, firstXScale, firstYScale);
