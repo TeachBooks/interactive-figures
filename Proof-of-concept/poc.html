@@ -139,181 +139,222 @@
        correlation: 0
     };
 
+    // Add legend for first graph (density contours)
+    function addLegends(firstGraph, secondGraph) {
+    // Add legend for first graph (density contours)
+    const firstLegend = firstGraph.append("text")
+        .attr("class", "graph-title")
+        .attr("x", 26)
+        .attr("y", 129)
+        .style("font-size", "2px")
+        .style("fill", "black")
+        .text("density contours");
+
+    // Add legend for second graph (samples)
+    const secondLegend = secondGraph.append("text")
+        .attr("class", "graph-title")
+        .attr("x", 56)
+        .attr("y", 129)
+        .style("font-size", "2px")
+        .style("fill", "black")
+        .text("samples");
+}
+
     // Load the SVG with two xy graphs directly with D3
     d3.xml("https://raw.githubusercontent.com/TeachBooks/interactive-figures/refs/heads/main/Images/usable_example.svg").then(data => {
-       const importedSVG = data.documentElement;
-       d3.select("#my_datavisualization").node().appendChild(importedSVG);
+        const importedSVG = data.documentElement;
+        d3.select("#my_datavisualization").node().appendChild(importedSVG);
 
-       // Create D3 selections for both graph groups
-       const firstGraph = d3.select(importedSVG).select("#layer2"); // First xy graph
-       const secondGraph = d3.select(importedSVG).select("#layer1"); // Second xy graph
+        // Create D3 selections for both graph groups
+        const firstGraph = d3.select(importedSVG).select("#layer2"); // First xy graph
+        const secondGraph = d3.select(importedSVG).select("#layer1"); // Second xy graph
 
-       // Calculate the transformation values for first graph
-       const firstGraphPath = firstGraph.select("path");
-       const firstBBox = firstGraphPath.node().getBBox();
-       const firstXScale = d3.scaleLinear().domain([-5, 5]).range([firstBBox.x, firstBBox.x + firstBBox.width]);
-       const firstYScale = d3.scaleLinear().domain([-5, 5]).range([firstBBox.y + firstBBox.height, firstBBox.y]);
+        addLegends(firstGraph, secondGraph);
 
-       // Calculate the transformation values for second graph
-       const secondGraphPaths = secondGraph.selectAll("path");
-       const xPath = secondGraph.select("#x");
-       const yPath = secondGraph.select("#y");
+        // Calculate the transformation values for first graph
+        const firstGraphPath = firstGraph.select("path");
+        const firstBBox = firstGraphPath.node().getBBox();
+        const firstXScale = d3.scaleLinear().domain([-5, 5]).range([firstBBox.x, firstBBox.x + firstBBox.width]);
+        const firstYScale = d3.scaleLinear().domain([-5, 5]).range([firstBBox.y + firstBBox.height, firstBBox.y]);
 
-       // Get the bounding boxes for x and y paths
-       const xBBox = xPath.node().getBBox();
-       const yBBox = yPath.node().getBBox();
+        // Calculate the transformation values for second graph
+        const secondGraphPaths = secondGraph.selectAll("path");
+        const xPath = secondGraph.select("#x");
+        const yPath = secondGraph.select("#y");
 
-       // Create scales using the actual coordinates from the paths
-       const secondXScale = d3.scaleLinear()
+        // Get the bounding boxes for x and y paths
+        const xBBox = xPath.node().getBBox();
+        const yBBox = yPath.node().getBBox();
+
+        // Create scales using the actual coordinates from the paths
+        const secondXScale = d3.scaleLinear()
           .domain([-5, 5])
           .range([yBBox.x, xBBox.x + xBBox.width]);
 
-       const secondYScale = d3.scaleLinear()
+        const secondYScale = d3.scaleLinear()
           .domain([-5, 5])
           .range([xBBox.y, yBBox.y]);
 
-       // Ensure the text container exists
-       const textGroup = d3.select(importedSVG).select("#layer4");
+        // Ensure the text container exists
+        const textGroup = d3.select(importedSVG).select("#layer4");
 
-       // Create or select mean and sigma display elements
-       textGroup.selectAll(".stat-value").remove();  // Remove old values if they exist
+        // Create or select mean and sigma display elements
+        textGroup.selectAll(".stat-value").remove();  // Remove old values if they exist
 
-       const meanText = textGroup.append("text")
-          .attr("class", "stat-value")
-          .attr("x", 86.6)
-          .attr("y", 131.6)
-          .style("font-size", "2.11667px")
-          .style("fill", "black");
+        const meanText = textGroup.append("text")
+            .attr("class", "stat-value")
+            .attr("x", 86.6)
+            .attr("y", 131.6)
+            .style("font-size", "2.11667px")
+            .style("fill", "black");
 
-       const sigma1Text = textGroup.append("text")
-          .attr("class", "stat-value")
-          .attr("x", 90)
-          .attr("y", 135.5)
-          .style("font-size", "2.11667px")
-          .style("fill", "black");
+        const sigma1Text = textGroup.append("text")
+            .attr("class", "stat-value")
+            .attr("x", 90)
+            .attr("y", 135.5)
+            .style("font-size", "2.11667px")
+            .style("fill", "black");
 
-       const sigma2Text = textGroup.append("text")
-          .attr("class", "stat-value")
-          .attr("x",90)
-          .attr("y", 139.5)
-          .style("font-size", "2.11667px")
-          .style("fill", "black");
+        const sigma2Text = textGroup.append("text")
+            .attr("class", "stat-value")
+            .attr("x",90)
+            .attr("y", 139.5)
+            .style("font-size", "2.11667px")
+            .style("fill", "black");
 
-       // Function to calculate empirical statistics from points
-       function calculateStatistics(points) {
-          const meanX1 = d3.mean(points, d => d.x1);
-          const meanX2 = d3.mean(points, d => d.x2);
-          const stdX1 = Math.sqrt(d3.variance(points, d => d.x1));
-          const stdX2 = Math.sqrt(d3.variance(points, d => d.x2));
+        // Function to calculate empirical statistics from points
+        function calculateStatistics(points) {
+            const meanX1 = d3.mean(points, d => d.x1);
+            const meanX2 = d3.mean(points, d => d.x2);
+            const stdX1 = Math.sqrt(d3.variance(points, d => d.x1));
+            const stdX2 = Math.sqrt(d3.variance(points, d => d.x2));
 
-          // Calculate empirical correlation
-          const n = points.length;
-          const meanDiffX1 = points.map(d => d.x1 - meanX1);
-          const meanDiffX2 = points.map(d => d.x2 - meanX2);
-          const correlation = d3.sum(meanDiffX1.map((d, i) => d * meanDiffX2[i])) /
+            // Calculate empirical correlation
+            const n = points.length;
+            const meanDiffX1 = points.map(d => d.x1 - meanX1);
+            const meanDiffX2 = points.map(d => d.x2 - meanX2);
+            const correlation = d3.sum(meanDiffX1.map((d, i) => d * meanDiffX2[i])) /
                              (Math.sqrt(d3.sum(meanDiffX1.map(d => d * d)) *
                                       d3.sum(meanDiffX2.map(d => d * d))));
 
-          return { meanX1, meanX2, stdX1, stdX2, correlation };
-       }
+            return { meanX1, meanX2, stdX1, stdX2, correlation };
+        }
 
-       // Initial plot rendering
-       function updatePlots() {
-          // Clear previous elements
-          firstGraph.selectAll(".contour-element").remove();
-          secondGraph.selectAll(".sample-point").remove();
+        // Function to calculate probability density for bivariate normal
+        function bivariateNormalDensity(x1, x2, params) {
+            const dx1 = x1 - params.meanX1;
+            const dx2 = x2 - params.meanX2;
+            const s1_2 = params.stdX1 * params.stdX1;
+            const s2_2 = params.stdX2 * params.stdX2;
+            const rho = params.correlation;
 
-          // Draw the density contour points and lines in first graph
-          const contourPoints = [
-             // Central point
-             {x1: params.meanX1, x2: params.meanX2, color: "red"},
-             // Points along the principal axes
-             {x1: params.meanX1 + params.stdX1, x2: params.meanX2, color: "blue"},
-             {x1: params.meanX1 - params.stdX1, x2: params.meanX2, color: "gray"},
-             {x1: params.meanX1, x2: params.meanX2 + params.stdX2, color: "yellow"},
-             {x1: params.meanX1, x2: params.meanX2 - params.stdX2, color: "green"}
-          ];
+            const z = (dx1*dx1/s1_2 + dx2*dx2/s2_2 - 2*rho*dx1*dx2/(params.stdX1*params.stdX2))/(1-rho*rho);
+            return Math.exp(-z/2) / (2 * Math.PI * params.stdX1 * params.stdX2 * Math.sqrt(1-rho*rho));
+        }
 
-          // Draw contour lines in first graph
-          const lineGenerator = d3.line()
-             .x(d => firstXScale(d.x1))
-             .y(d => firstYScale(d.x2))
-             .curve(d3.curveBasis);
+        // Function to generate contour paths
+        function generateContours(params, xScale, yScale) {
+            const contourLevels = [0.01, 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.2];
+            const paths = [];
+            const gridSize = 50;
+            const margin = 3;
 
-          // Draw horizontal line
-          firstGraph.append("path")
-             .attr("class", "contour-element")
-             .attr("d", lineGenerator([
-                {x1: params.meanX1 - params.stdX1, x2: params.meanX2},
-                {x1: params.meanX1 + params.stdX1, x2: params.meanX2}
-             ]))
-             .attr("stroke", "gray")
-             .attr("fill", "none")
-             .attr("stroke-width", "0.2");
+            // Create grid of points
+            for (let level of contourLevels) {
+                const contourPoints = [];
+                for (let angle = 0; angle < 2*Math.PI; angle += 2*Math.PI/100) {
+                    // For each angle, find radius where density equals level
+                    let r = 0;
+                    let dr = 0.1;
+                    let maxIter = 50;
 
-          // Draw curved vertical line
-          const verticalCurvePoints = [];
-          for (let t = -1; t <= 1; t += 0.1) {
-             verticalCurvePoints.push({
-                x1: params.meanX1 + (params.correlation * params.stdX1 * t),
-                x2: params.meanX2 + (params.stdX2 * t)
-             });
-          }
+                    while (maxIter-- > 0) {
+                        const x1 = params.meanX1 + r * Math.cos(angle);
+                        const x2 = params.meanX2 + r * Math.sin(angle);
+                        const density = bivariateNormalDensity(x1, x2, params);
 
-          firstGraph.append("path")
-             .attr("class", "contour-element")
-             .attr("d", lineGenerator(verticalCurvePoints))
-             .attr("stroke", "gray")
-             .attr("fill", "none")
-             .attr("stroke-width", "0.2");
+                        if (Math.abs(density - level) < 0.001) break;
 
-          // Draw contour points in first graph
-          firstGraph.selectAll(".contour-point")
-             .data(contourPoints)
-             .enter()
-             .append("circle")
-             .attr("class", "contour-element")
-             .attr("cx", d => firstXScale(d.x1))
-             .attr("cy", d => firstYScale(d.x2))
-             .attr("r", 0.5)
-             .attr("fill", d => d.color);
+                        if (density > level) {
+                            r += dr;
+                        } else {
+                            r -= dr;
+                            dr /= 2;
+                        }
+                    }
 
-          // Generate and draw sample points for the second graph
-          const points = generateGaussianPoints(
-             params.meanX1, params.meanX2,
-             params.stdX1, params.stdX2,
-             params.correlation
-          );
+                    contourPoints.push({
+                        x1: params.meanX1 + r * Math.cos(angle),
+                        x2: params.meanX2 + r * Math.sin(angle)
+                    });
+                }
+                paths.push({level, points: contourPoints});
+            }
+            return paths;
+        }
 
-          // Draw sample points in second graph with corrected scaling
-          secondGraph.selectAll("circle.sample-point")
-             .data(points)
-             .enter()
-             .append("circle")
-             .attr("class", "sample-point")
-             .attr("cx", d => secondXScale(d.x1))
-             .attr("cy", d => secondYScale(d.x2))
-             .attr("r", 0.3)
-             .attr("fill", "rgba(0, 0, 0, 0.5)");
+        // Update the plot rendering function
+        function updatePlots() {
+            // Clear previous elements
+            firstGraph.selectAll(".contour-element").remove();
+            secondGraph.selectAll(".sample-point").remove();
 
-          // Calculate and update empirical statistics
-          const stats = calculateStatistics(points);
+            // Generate and draw contour paths
+            const contourPaths = generateContours(params, firstXScale, firstYScale);
 
-          // Update the displayed statistics with empirical values
-          meanText.text(`${stats.meanX1.toFixed(2)}, ${stats.meanX2.toFixed(2)}`);
-          sigma1Text.text(`${stats.stdX1.toFixed(2)}`);
-          sigma2Text.text(`${stats.stdX2.toFixed(2)}`);
+            // Create color scale for contours
+            const colorScale = d3.scaleSequential()
+                .domain([0, contourPaths.length-1])
+                .interpolator(d3.interpolateYlOrRd);
 
-          // Update covariance matrix with empirical values
-          const sigmaX1Sq = Math.pow(stats.stdX1, 2);
-          const sigmaX2Sq = Math.pow(stats.stdX2, 2);
-          const covX1X2 = stats.correlation * stats.stdX1 * stats.stdX2;
+            // Draw contours
+            contourPaths.forEach((path, i) => {
+                const lineGenerator = d3.line()
+                    .x(d => firstXScale(d.x1))
+                    .y(d => firstYScale(d.x2))
+                    .curve(d3.curveCatmullRomClosed);
 
-          d3.select("#text2048").text(sigmaX1Sq.toFixed(2));
-          d3.select("#text2052").text(sigmaX2Sq.toFixed(2));
-          d3.select("#text2056").text(covX1X2.toFixed(2));
-          d3.select("#text2060").text(covX1X2.toFixed(2));
-       }
+                firstGraph.append("path")
+                    .attr("class", "contour-element")
+                    .attr("d", lineGenerator(path.points))
+                    .attr("fill", colorScale(i))
+                    .attr("stroke", "none")
+                    .attr("fill-opacity", 0.2);
+            });
+
+            // Generate and draw sample points for the second graph
+            const points = generateGaussianPoints(
+                params.meanX1, params.meanX2,
+                params.stdX1, params.stdX2,
+                params.correlation
+            );
+
+            // Draw sample points
+            secondGraph.selectAll("circle.sample-point")
+                .data(points)
+                .enter()
+                .append("circle")
+                .attr("class", "sample-point")
+                .attr("cx", d => secondXScale(d.x1))
+                .attr("cy", d => secondYScale(d.x2))
+                .attr("r", 0.3)
+                .attr("fill", "rgba(0, 0, 0, 0.5)");
+
+            // Update statistics
+            const stats = calculateStatistics(points);
+            meanText.text(`${stats.meanX1.toFixed(2)}, ${stats.meanX2.toFixed(2)}`);
+            sigma1Text.text(`${stats.stdX1.toFixed(2)}`);
+            sigma2Text.text(`${stats.stdX2.toFixed(2)}`);
+
+            const sigmaX1Sq = Math.pow(stats.stdX1, 2);
+            const sigmaX2Sq = Math.pow(stats.stdX2, 2);
+            const covX1X2 = stats.correlation * stats.stdX1 * stats.stdX2;
+
+            d3.select("#text2048").text(sigmaX1Sq.toFixed(2));
+            d3.select("#text2052").text(sigmaX2Sq.toFixed(2));
+            d3.select("#text2056").text(covX1X2.toFixed(2));
+            d3.select("#text2060").text(covX1X2.toFixed(2));
+        }
 
        // Initial render
        updatePlots();
