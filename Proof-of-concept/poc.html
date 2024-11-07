@@ -305,40 +305,25 @@
             return { meanX1, meanX2, stdX1, stdX2, correlation };
         }
 
-        // Function to calculate probability density for bivariate normal
-        function bivariateNormalDensity(x1, x2, params) {
-            const dx1 = x1 - params.meanX1;
-            const dx2 = x2 - params.meanX2;
-            const s1_2 = params.stdX1 * params.stdX1;
-            const s2_2 = params.stdX2 * params.stdX2;
-            const rho = params.correlation;
-
-            const z = (dx1*dx1/s1_2 + dx2*dx2/s2_2 - 2*rho*dx1*dx2/(params.stdX1*params.stdX2))/(1-rho*rho);
-            return Math.exp(-z/2) / (2 * Math.PI * params.stdX1 * params.stdX2 * Math.sqrt(1-rho*rho));
-        }
-
-        // Function to generate contour paths
         function generateContours(params, xScale, yScale) {
-            const contourLevels = [0.01, 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.2];
+            const contourLevels = [0.002, 0.005, 0.01, 0.02, 0.03, 0.04];
             const paths = [];
-            const gridSize = 50;
             const margin = 3;
 
             // Create grid of points
             for (let level of contourLevels) {
                 const contourPoints = [];
                 for (let angle = 0; angle < 2*Math.PI; angle += 2*Math.PI/100) {
-                    // For each angle, find radius where density equals level
                     let r = 0;
-                    let dr = 0.1;
-                    let maxIter = 50;
+                    let dr = 0.2;
+                    let maxIter = 100;
 
                     while (maxIter-- > 0) {
                         const x1 = params.meanX1 + r * Math.cos(angle);
                         const x2 = params.meanX2 + r * Math.sin(angle);
                         const density = bivariateNormalDensity(x1, x2, params);
 
-                        if (Math.abs(density - level) < 0.001) break;
+                        if (Math.abs(density - level) < 0.0001) break;
 
                         if (density > level) {
                             r += dr;
@@ -356,6 +341,19 @@
                 paths.push({level, points: contourPoints});
             }
             return paths;
+        }
+
+        // Update the bivariateNormalDensity function to create wider spreads
+        function bivariateNormalDensity(x1, x2, params) {
+            const dx1 = x1 - params.meanX1;
+            const dx2 = x2 - params.meanX2;
+            const s1_2 = params.stdX1 * params.stdX1;
+            const s2_2 = params.stdX2 * params.stdX2;
+            const rho = params.correlation;
+
+            const z = (dx1*dx1/s1_2 + dx2*dx2/s2_2 - 2*rho*dx1*dx2/(params.stdX1*params.stdX2))/(1-rho*rho);
+            // Adjusted the denominator to create wider contours
+            return Math.exp(-z/2) / (4 * Math.PI * params.stdX1 * params.stdX2 * Math.sqrt(1-rho*rho));
         }
 
         // Update the plot rendering function
