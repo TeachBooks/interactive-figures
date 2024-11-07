@@ -163,11 +163,9 @@
     function addAxisTicks(graph, xScale, yScale, xPos, yPos, isFirstGraph = false) {
         const tickValues = [-4, -2, 0, 2, 4];
 
-        // Add extra padding for the first graph's y-axis
         const yAxisPadding = isFirstGraph ? 3 : 0;
-        const xLabelOffset = 2.5; // Increased vertical spacing for x-axis labels
+        const xLabelOffset = 2.5;
 
-        // Add X-axis ticks
         tickValues.forEach(tick => {
             // Add tick mark
             graph.append("line")
@@ -179,17 +177,17 @@
                 .attr("stroke", "black")
                 .attr("stroke-width", "0.1");
 
-            // Add tick label with more vertical spacing
+            // Add tick label
             graph.append("text")
                 .attr("class", "tick-label")
                 .attr("x", xScale(tick))
-                .attr("y", yPos + xLabelOffset)  // Increased spacing
+                .attr("y", yPos + xLabelOffset)
                 .attr("text-anchor", "middle")
                 .style("font-size", "1.5px")
                 .text(tick);
         });
 
-        // Add Y-axis ticks with extra padding for first graph
+        // Add Y-axis ticks
         tickValues.forEach(tick => {
             // Add tick mark
             graph.append("line")
@@ -201,7 +199,7 @@
                 .attr("stroke", "black")
                 .attr("stroke-width", "0.1");
 
-            // Add tick label with extra padding for first graph
+            // Add tick label
             graph.append("text")
                 .attr("class", "tick-label")
                 .attr("x", xPos - yAxisPadding - 1)
@@ -211,16 +209,52 @@
                 .style("font-size", "1.5px")
                 .text(tick);
         });
+
+        // Add X-axis label (X₁)
+        graph.append("text")
+            .attr("class", "axis-label")
+            .attr("x", xScale(0))  // Center of x-axis
+            .attr("y", yPos + 5)   // Below the axis
+            .attr("text-anchor", "middle")
+            .style("font-size", "2px")
+            .text("X1");
+
+        // Add Y-axis label (X₂)
+        graph.append("text")
+            .attr("class", "axis-label")
+            .attr("x", xPos - yAxisPadding - (isFirstGraph ? 6 : 4))  // Adjust position based on graph
+            .attr("y", yScale(0))  // Center of y-axis
+            .attr("text-anchor", "middle")
+            .attr("transform", `rotate(-90 ${xPos - yAxisPadding - (isFirstGraph ? 6 : 4)} ${yScale(0)})`)
+            .style("font-size", "2px")
+            .text("X2");
+
+        // Make sure labels are on top
+        graph.selectAll(".axis-label").raise();
     }
 
     // Load the SVG with two xy graphs directly with D3
     d3.xml("https://raw.githubusercontent.com/TeachBooks/interactive-figures/refs/heads/main/Images/usable_example.svg").then(data => {
         const importedSVG = data.documentElement;
+
+
+        // Get current viewBox values
+        const currentViewBox = importedSVG.getAttribute("viewBox").split(" ").map(Number);
+
+        const newViewBox = [
+            currentViewBox[0] - 10,
+            currentViewBox[1],
+            currentViewBox[2] + 10,
+            currentViewBox[3]
+        ];
+
+        importedSVG.setAttribute("viewBox", newViewBox.join(" "));
+
         d3.select("#my_datavisualization").node().appendChild(importedSVG);
 
         // Create D3 selections for both graph groups
         const firstGraph = d3.select(importedSVG).select("#layer2"); // First xy graph
-        firstGraph.attr("transform", "translate(-18,-130)");
+        firstGraph.attr("transform", "translate(-22,-130)");
         const secondGraph = d3.select(importedSVG).select("#layer1"); // Second xy graph
         secondGraph.attr("transform", "translate(-18,-130)");
 
