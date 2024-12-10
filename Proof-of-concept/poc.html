@@ -6,12 +6,57 @@
 </head>
 <body>
     <div class="main-container">
-        <div id="my_datavisualization"></div>
-        <div class="slider-container">
-            <div class="slider-container">
+        <!-- Top Settings -->
+        <div class="graph-settings">
+            <div class="settings-inputs">
+                <div class="text-input-group">
+                    <label for="leftGraphTitle">Left Graph:</label>
+                    <input type="text" id="leftGraphTitle" class="text-input" value="density contours">
+                </div>
+                <div class="text-input-group">
+                    <label for="rightGraphTitle">Right Graph:</label>
+                    <input type="text" id="rightGraphTitle" class="text-input" value="samples">
+                </div>
+                <div class="text-input-group">
+                    <label for="xAxisLabel">X-Axis:</label>
+                    <input type="text" id="xAxisLabel" class="text-input" value="X1">
+                </div>
+                <div class="text-input-group">
+                    <label for="yAxisLabel">Y-Axis:</label>
+                    <input type="text" id="yAxisLabel" class="text-input" value="X2">
+                </div>
+            </div>
+            <button id="applySettings" class="apply-button">Apply Settings</button>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-container">
+            <!-- Left side - Visualization -->
+            <div id="my_datavisualization"></div>
+
+            <!-- Right side - Controls -->
+            <div class="controls-container">
+                <!-- Statistics Section -->
+                <div class="stats-section">
+                    <h3>Statistics</h3>
+                    <div class="stat-item">
+                        <span class="stat-label">Mean (X1, X2):</span>
+                        <span class="stat-value" id="meanValue">0.00, 0.00</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Std Dev X1:</span>
+                        <span class="stat-value" id="stdX1Value">1.00</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Std Dev X2:</span>
+                        <span class="stat-value" id="stdX2Value">1.00</span>
+                    </div>
+                </div>
+
+                <!-- Sliders -->
                 <div class="slider-group">
                     <div class="slider-label">Mean of X1</div>
-                    <label for="meanX1"></label><input id="meanX1" class="slider" type="range" min="-2" max="2" step="0.1" value="0">
+                    <input id="meanX1" class="slider" type="range" min="-2" max="2" step="0.1" value="0">
                     <div class="range-values">
                         <span>-2</span>
                         <span>2</span>
@@ -20,7 +65,7 @@
 
                 <div class="slider-group">
                     <div class="slider-label">Mean of X2</div>
-                    <label for="meanX2"></label><input id="meanX2" class="slider" type="range" min="-2" max="2" step="0.1" value="0">
+                    <input id="meanX2" class="slider" type="range" min="-2" max="2" step="0.1" value="0">
                     <div class="range-values">
                         <span>-2</span>
                         <span>2</span>
@@ -29,7 +74,7 @@
 
                 <div class="slider-group">
                     <div class="slider-label">Standard deviation of X1</div>
-                    <label for="stdX1"></label><input id="stdX1" class="slider" type="range" min="0.1" max="2" step="0.1" value="1">
+                    <input id="stdX1" class="slider" type="range" min="0.1" max="2" step="0.1" value="1">
                     <div class="range-values">
                         <span>0.1</span>
                         <span>2</span>
@@ -38,7 +83,7 @@
 
                 <div class="slider-group">
                     <div class="slider-label">Standard deviation of X2</div>
-                    <label for="stdX2"></label><input id="stdX2" class="slider" type="range" min="0.1" max="2" step="0.1" value="1">
+                    <input id="stdX2" class="slider" type="range" min="0.1" max="2" step="0.1" value="1">
                     <div class="range-values">
                         <span>0.1</span>
                         <span>2</span>
@@ -47,7 +92,7 @@
 
                 <div class="slider-group">
                     <div class="slider-label">Correlation</div>
-                    <label for="correlation"></label><input id="correlation" class="slider" type="range" min="-1" max="1" step="0.01" value="0">
+                    <input id="correlation" class="slider" type="range" min="-1" max="1" step="0.01" value="0">
                     <div class="range-values">
                         <span>-1</span>
                         <span>1</span>

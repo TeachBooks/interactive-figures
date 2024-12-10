@@ -1,3 +1,10 @@
+/* Reset and base styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -8,20 +15,81 @@ body {
     padding: 20px;
 }
 
+/* Main container layout */
 .main-container {
     display: flex;
+    flex-direction: column;
     width: 90vw;
     height: 90vh;
-    gap: 40px;
-    align-items: center;
+    padding: 10px;
+    gap: 10px;
 }
 
-#my_datavisualization {
-    flex: 3;
-    height: 100%;
+/* Top settings section */
+.graph-settings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.settings-inputs {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.text-input-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9em;
+}
+
+.text-input {
+    padding: 3px 5px;
+    width: 120px;
+    height: 24px;
+    font-size: 0.9em;
+}
+
+/* Apply button styles */
+.apply-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+}
+
+.apply-button:hover {
+    background-color: #45a049;
+}
+
+.apply-button:active {
+    background-color: #3d8b40;
+}
+
+/* Content area layout */
+.content-container {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+    flex-grow: 1;
+}
+
+/* Visualization area */
+#my_datavisualization {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: 5px;
 }
 
 #my_datavisualization svg {
@@ -31,29 +99,32 @@ body {
     max-height: 80vh;
 }
 
-.slider-container {
-    flex: 1;
+/* Controls container */
+.controls-container {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
     display: flex;
     flex-direction: column;
     gap: 15px;
-    width: 250px;
-    padding: 20px;
-    background: #f5f5f5;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+/* Slider styles */
 .slider-group {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     width: 100%;
 }
 
 .slider {
     width: 100%;
-    margin: 8px 0;
+    margin: 5px 0;
 }
 
 .slider-label {
-    font-size: 14px;
+    font-size: 0.9em;
     margin-bottom: 5px;
     color: #333;
 }
@@ -61,8 +132,35 @@ body {
 .range-values {
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    font-size: 12px;
+    font-size: 0.8em;
     color: #666;
     margin-top: 2px;
+}
+
+/* Stats section */
+.stats-section {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.stats-section h3 {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.stat-item {
+    margin-bottom: 8px;
+    font-size: 0.9em;
+}
+
+.stat-label {
+    color: #666;
+}
+
+.stat-value {
+    font-weight: bold;
+    color: #333;
 }
