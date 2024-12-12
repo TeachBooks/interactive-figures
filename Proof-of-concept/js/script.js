@@ -52,7 +52,9 @@ class Visualization {
             scales: {},
             texts: {},
             currentDistribution: 'bivariateNormal',
-            currentVisualization: 'contourScatter'
+            currentVisualization: 'contourScatter',
+            pendingDistribution: 'bivariateNormal',
+            pendingVisualization: 'contourScatter'
         };
     }
 
@@ -258,18 +260,27 @@ class Visualization {
 
     setupEventListeners() {
         // Apply button listener
-        document.getElementById("applySettings").addEventListener("click", () => this.updateGraphLabels());
+        document.getElementById("applySettings").addEventListener("click", () => {
+            // Update labels
+            this.updateGraphLabels();
+
+            // Apply pending distribution and visualization changes
+            this.state.currentDistribution = this.state.pendingDistribution;
+            this.state.currentVisualization = this.state.pendingVisualization;
+
+            // Update visibility and plots
+            this.updateVisibility();
+        });
+
 
         // Distribution type listener
         document.getElementById("distributionType").addEventListener("change", (event) => {
-            this.state.currentDistribution = event.target.value;
-            this.updateVisibility();
+            this.state.pendingDistribution = event.target.value;
         });
 
         // Visualization type listener
         document.getElementById("visualizationType").addEventListener("change", (event) => {
-            this.state.currentVisualization = event.target.value;
-            this.updateVisibility();
+            this.state.pendingVisualization = event.target.value;
         });
 
         // Slider listeners
@@ -301,6 +312,29 @@ class Visualization {
         const sliderContainer = document.querySelector('.controls-container');
         sliderContainer.style.display = shouldShow ? "flex" : "none";
 
+        // Hide statistics text elements when not showing bivariate normal
+        const { mean, sigma1, sigma2 } = this.state.texts;
+        [mean, sigma1, sigma2].forEach(text => {
+            text.style("display", shouldShow ? "block" : "none");
+        });
+
+        // Hide covariance matrix elements and frame
+        const elementsToHide = [
+            // Matrix values
+            "#text2048", "#text2052", "#text2056", "#text2060",
+            // Matrix frame
+            "#rect2046", "#path1862", "#path1862-5", "#text1994",
+            // Labels
+            "#text1222", "#text1222-7", "#text1222-2",
+            // Inkscape elements
+            "[inkscape\\:current-layer]",
+            "sodipodi\\:namedview"
+        ];
+
+        elementsToHide.forEach(selector => {
+            d3.selectAll(selector).style("display", shouldShow ? "block" : "none");
+        });
+
         // Show a message if the graphs are hidden
         const vizContainer = d3.select("#my_datavisualization");
         const messageId = "alternate-visualization-message";
@@ -318,7 +352,7 @@ class Visualization {
                 .style("text-align", "center")
                 .style("font-size", "16px")
                 .style("color", "#666")
-                .html("This visualization is only available for<br>Bivariate Normal distribution with Contour & Scatter plot.");
+                .html("This visualization is not available yet");
         }
 
         // Update the plots if showing bivariate normal
