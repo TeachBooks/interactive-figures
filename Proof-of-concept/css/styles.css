@@ -28,11 +28,29 @@ body {
 /* Top settings section */
 .graph-settings {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 10px;
     background: #f5f5f5;
     padding: 10px;
     border-radius: 5px;
+}
+
+.settings-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.primary-controls {
+    display: flex;
+    gap: 15px;
+}
+
+.secondary-controls {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .settings-inputs {
@@ -54,6 +72,11 @@ body {
     width: 120px;
     height: 24px;
     font-size: 0.9em;
+}
+
+select.text-input {
+    width: 180px;
+    padding-right: 20px;
 }
 
 /* Apply button styles */

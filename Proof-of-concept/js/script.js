@@ -50,7 +50,9 @@ class Visualization {
             params: {...CONFIG.defaultParams},
             graphs: {},
             scales: {},
-            texts: {}
+            texts: {},
+            currentDistribution: 'bivariateNormal',
+            currentVisualization: 'contourScatter'
         };
     }
 
@@ -258,14 +260,71 @@ class Visualization {
         // Apply button listener
         document.getElementById("applySettings").addEventListener("click", () => this.updateGraphLabels());
 
+        // Distribution type listener
+        document.getElementById("distributionType").addEventListener("change", (event) => {
+            this.state.currentDistribution = event.target.value;
+            this.updateVisibility();
+        });
+
+        // Visualization type listener
+        document.getElementById("visualizationType").addEventListener("change", (event) => {
+            this.state.currentVisualization = event.target.value;
+            this.updateVisibility();
+        });
+
         // Slider listeners
         const sliders = ["meanX1", "meanX2", "stdX1", "stdX2", "correlation"];
         sliders.forEach(id => {
             d3.select(`#${id}`).on("input", (event) => {
                 this.state.params[id] = +event.target.value;
-                this.updatePlots();
+                if (this.shouldShowBivariateNormal()) {
+                    this.updatePlots();
+                }
             });
         });
+    }
+
+    shouldShowBivariateNormal() {
+        return this.state.currentDistribution === 'bivariateNormal' &&
+               this.state.currentVisualization === 'contourScatter';
+    }
+
+    updateVisibility() {
+        const { firstGraph, secondGraph } = this.state.graphs;
+        const shouldShow = this.shouldShowBivariateNormal();
+
+        // Show/hide the graphs
+        firstGraph.style("display", shouldShow ? "block" : "none");
+        secondGraph.style("display", shouldShow ? "block" : "none");
+
+        // Show/hide the sliders based on distribution type
+        const sliderContainer = document.querySelector('.controls-container');
+        sliderContainer.style.display = shouldShow ? "flex" : "none";
+
+        // Show a message if the graphs are hidden
+        const vizContainer = d3.select("#my_datavisualization");
+        const messageId = "alternate-visualization-message";
+
+        // Remove existing message if it exists
+        vizContainer.select(`#${messageId}`).remove();
+
+        if (!shouldShow) {
+            vizContainer.append("div")
+                .attr("id", messageId)
+                .style("position", "absolute")
+                .style("top", "50%")
+                .style("left", "50%")
+                .style("transform", "translate(-50%, -50%)")
+                .style("text-align", "center")
+                .style("font-size", "16px")
+                .style("color", "#666")
+                .html("This visualization is only available for<br>Bivariate Normal distribution with Contour & Scatter plot.");
+        }
+
+        // Update the plots if showing bivariate normal
+        if (shouldShow) {
+            this.updatePlots();
+        }
     }
 
     calculateStatistics(points) {
