@@ -352,7 +352,6 @@ class Visualization {
                 .style("text-align", "center")
                 .style("font-size", "16px")
                 .style("color", "#666")
-                .html("This visualization is not available yet");
         }
 
         // Update the plots if showing bivariate normal
