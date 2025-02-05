@@ -121,9 +121,11 @@ const circles = svg.selectAll("circle")
     .attr("r", 4)
     .attr("fill", "blue");
 
-// Train the model
 async function trainModel() {
-    document.getElementById("statusMessage").innerText = "Iterating..."; // Show "Iterating..." text
+    document.getElementById("statusMessage").innerText = "Iterating...";
+
+    // Clear previous regression lines before starting
+    svg.selectAll(".regression-step").remove();
 
     let degree = parseInt(degreeInput.value);
     let baseLearningRate = Math.min(parseFloat(learningRateInput.value), 0.1);
@@ -150,41 +152,40 @@ async function trainModel() {
         // Prevent extreme coefficient values
         coeffs = coeffs.map(c => Math.max(-3, Math.min(3, c)));
 
-        // Update visualization
-        updatePlot(coeffs);
+        // Update visualization with step tracking
+        updatePlot(coeffs, iter, iterations);
+
         await new Promise(resolve => setTimeout(resolve, 10));
     }
 
-    document.getElementById("statusMessage").innerText = "Done!"; // Change text to "Done!" when finished
+    document.getElementById("statusMessage").innerText = "Done!";
 }
 
 
+
+
 // Function to update the plot
-function updatePlot(coeffs) {
+function updatePlot(coeffs, iteration, maxIterations) {
     const xRange = d3.range(-1, 1, 0.05); // Ensure X stays in [-1,1]
 
     const lineGenerator = d3.line()
         .x(d => xScale(Math.max(-1, Math.min(1, d)))) // Clamp X within [-1,1]
         .y(d => yScale(polynomial(coeffs, d))); // Y is already constrained in training
 
-    let regressionLine = svg.selectAll(".regression-line").data([xRange]);
+    let opacityScale = d3.scaleLinear()
+        .domain([0, maxIterations]) // Map iterations to opacity
+        .range([0.1, 1]); // Older steps become more transparent
 
-    regressionLine
-        .join(
-            enter => enter.append("path")
-                .attr("class", "regression-line")
-                .attr("fill", "none")
-                .attr("stroke", "red")
-                .attr("stroke-width", 2)
-                .style("opacity", 1)
-                .attr("d", lineGenerator(xRange)),
-            update => update.transition()
-                .duration(300)
-                .ease(d3.easeLinear)
-                .attr("d", lineGenerator(xRange)),
-            exit => exit.remove()
-        );
+    // Append new regression line for each step
+    svg.append("path")
+        .attr("class", "regression-step")
+        .attr("fill", "none")
+        .attr("stroke", "red")
+        .attr("stroke-width", 2)
+        .style("opacity", opacityScale(iteration)) // Newer steps are more visible
+        .attr("d", lineGenerator(xRange));
 }
+
 
 // Add legend container OUTSIDE the XY graph but inside the grey box
 const legend = svg.append("g")
