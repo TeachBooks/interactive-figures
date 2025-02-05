@@ -18,8 +18,30 @@ function updateUI() {
 // Attach training function ONLY to button click
 startButton.addEventListener("click", trainModel);
 
-// Generate 60 random data points
-let rawData = d3.range(30).map(() => ({ x: Math.random() * 10, y: Math.random() * 10 }));
+// Generate 30 biased data points with a quadratic trend
+
+// let rawData = d3.range(30).map(() => {
+//     let x = Math.random() * 10;  // X in range [0,10]
+//     let noise = (Math.random() - 0.5) * 3; // Random noise to make it realistic
+//     let y = 0.5 * Math.pow(x, 2) - 2 * x + 3 + noise; // Quadratic pattern
+//     return { x, y };
+// });
+
+let rawData = d3.range(30).map(() => {
+    let x = Math.random() * 10 - 5; // X in range [-5,5] for better oscillations
+    let noise = (Math.random() - 0.5) * 0.5; // Small noise to prevent overfitting
+    let y = Math.sin(2 * x) + 0.3 * Math.pow(x, 2) - 0.5 * x + noise; // Oscillating pattern
+    return { x, y };
+});
+
+
+// let rawData = d3.range(30).map(() => {
+//     let x = Math.random() * 10;  // X in range [0,10]
+//     let noise = (Math.random() - 0.5) * 3; // Random noise to make it realistic
+//     let y = 0.5 * Math.pow(x, 3) - 2 * Math.pow(x, 2) + 3 * x + 5 + noise; // Cubic pattern
+//     return { x, y };
+// });
+
 
 // Normalize the data
 const xMean = d3.mean(rawData, d => d.x);
@@ -157,7 +179,6 @@ function updatePlot(coeffs) {
             exit => exit.remove()
         );
 }
-
 
 // Attach start button event listener
 startButton.addEventListener("click", trainModel);
