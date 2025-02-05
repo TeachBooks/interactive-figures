@@ -104,11 +104,12 @@ svg.append("text")
 // Add graph title
 svg.append("text")
     .attr("x", width / 2)
-    .attr("y", 0)
+    .attr("y", 30)
     .attr("text-anchor", "middle")
     .style("font-size", "18px")
     .style("font-weight", "bold")
     .text("Polynomial Regression with Gradient Descent");
+
 
 // Add data points
 const circles = svg.selectAll("circle")
@@ -122,6 +123,8 @@ const circles = svg.selectAll("circle")
 
 // Train the model
 async function trainModel() {
+    document.getElementById("statusMessage").innerText = "Iterating..."; // Show "Iterating..." text
+
     let degree = parseInt(degreeInput.value);
     let baseLearningRate = Math.min(parseFloat(learningRateInput.value), 0.1);
     let iterations = parseInt(iterationsInput.value);
@@ -151,7 +154,10 @@ async function trainModel() {
         updatePlot(coeffs);
         await new Promise(resolve => setTimeout(resolve, 10));
     }
+
+    document.getElementById("statusMessage").innerText = "Done!"; // Change text to "Done!" when finished
 }
+
 
 // Function to update the plot
 function updatePlot(coeffs) {
@@ -179,6 +185,53 @@ function updatePlot(coeffs) {
             exit => exit.remove()
         );
 }
+
+// Add legend container OUTSIDE the XY graph but inside the grey box
+const legend = svg.append("g")
+    .attr("class", "legend")
+    .attr("transform", `translate(${width - 120}, ${height / 2 - 220})`); // Center vertically
+
+// Add legend background box
+legend.append("rect")
+    .attr("x", -10)
+    .attr("y", -10)
+    .attr("width", 165)
+    .attr("height", 70)
+    .attr("fill", "white")
+    .attr("stroke", "black")
+    .attr("stroke-width", 1)
+    .attr("rx", 5)
+    .attr("ry", 5)
+    .style("opacity", 0.8); // Slight transparency
+
+// Legend for data points (first item)
+legend.append("circle")
+    .attr("cx", 10)
+    .attr("cy", 15)
+    .attr("r", 5)
+    .style("fill", "blue");
+
+legend.append("text")
+    .attr("x", 30)
+    .attr("y", 18)
+    .style("font-size", "14px")
+    .text("Data Points");
+
+// Legend for regression line (second item, below the first)
+legend.append("line")
+    .attr("x1", 5)
+    .attr("y1", 40)
+    .attr("x2", 25)
+    .attr("y2", 40)
+    .attr("stroke", "red")
+    .attr("stroke-width", 2);
+
+legend.append("text")
+    .attr("x", 30)
+    .attr("y", 43)
+    .style("font-size", "14px")
+    .text("Regression Curve");
+
 
 // Attach start button event listener
 startButton.addEventListener("click", trainModel);
