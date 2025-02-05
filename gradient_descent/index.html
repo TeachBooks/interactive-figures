@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polynomial Regression with Gradient Descent</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div id="dataPlot"></div>
+
+        <div class="controls">
+            <h2>Controls</h2>
+
+            <label for="learningRate">Learning Rate:</label>
+            <input type="range" id="learningRate" min="0.001" max="0.1" step="0.001" value="0.01">
+            <span id="lrValue">0.01</span>
+
+            <label for="iterations">Iterations:</label>
+            <input type="range" id="iterations" min="10" max="500" step="10" value="100">
+            <span id="iterValue">100</span>
+
+            <label for="degree">Polynomial Degree:</label>
+            <input type="range" id="degree" min="1" max="5" step="1" value="2">
+            <span id="degreeValue">2</span>
+
+            <button id="startButton">Start Training</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
