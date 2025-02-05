@@ -4,7 +4,7 @@ const iterationsInput = document.getElementById("iterations");
 const degreeInput = document.getElementById("degree");
 const startButton = document.getElementById("startButton");
 
-// Update UI display
+// Update text values dynamically
 learningRateInput.addEventListener("input", updateUI);
 iterationsInput.addEventListener("input", updateUI);
 degreeInput.addEventListener("input", updateUI);
@@ -15,10 +15,24 @@ function updateUI() {
     document.getElementById("degreeValue").innerText = degreeInput.value;
 }
 
-// Generate normalized data
-let data = d3.range(30).map(() => ({ x: (Math.random() * 10 - 5) / 5, y: Math.random() * 10 }));
+// Attach training function ONLY to button click
+startButton.addEventListener("click", trainModel);
 
-// Polynomial function
+// Generate 60 random data points
+let rawData = d3.range(30).map(() => ({ x: Math.random() * 10, y: Math.random() * 10 }));
+
+// Normalize the data
+const xMean = d3.mean(rawData, d => d.x);
+const xStd = d3.deviation(rawData, d => d.x);
+const yMean = d3.mean(rawData, d => d.y);
+const yStd = d3.deviation(rawData, d => d.y);
+
+let data = rawData.map(d => ({
+    x: Math.max(-1, Math.min(1, (d.x - xMean) / xStd)), // Clamp X within [-1,1]
+    y: Math.max(-1.4, Math.min(1.4, (d.y - yMean) / yStd)) // Clamp Y within [-1.4,1.4]
+}));
+
+// Polynomial function to compute values
 function polynomial(coeffs, x) {
     return coeffs.reduce((sum, coeff, i) => sum + coeff * Math.pow(x, i), 0);
 }
@@ -26,9 +40,10 @@ function polynomial(coeffs, x) {
 // Set up the plot
 const width = 750, height = 500, margin = 60;
 const xScale = d3.scaleLinear().domain([-1, 1]).range([margin, width - margin]);
-const yScale = d3.scaleLinear().domain([0, 10]).range([height - margin, margin]);
+const yScale = d3.scaleLinear().domain([-1.4, 1.4]).range([height - margin, margin]);
 
-d3.select("#dataPlot").selectAll("*").remove(); // Remove existing SVG before re-adding
+// Ensure only one SVG exists
+d3.select("#dataPlot").selectAll("*").remove();
 
 const svg = d3.select("#dataPlot")
     .append("svg")
@@ -41,17 +56,39 @@ const svg = d3.select("#dataPlot")
 const xAxis = d3.axisBottom(xScale).ticks(10);
 const yAxis = d3.axisLeft(yScale).ticks(10);
 
-svg.append("g").attr("transform", `translate(0,${height - margin})`).call(xAxis);
-svg.append("g").attr("transform", `translate(${margin},0)`).call(yAxis);
+svg.append("g")
+    .attr("transform", `translate(0,${height - margin})`)
+    .call(xAxis);
 
-// Add labels
-svg.append("text").attr("x", width / 2).attr("y", height - 10).style("text-anchor", "middle").text("X Values");
-svg.append("text").attr("transform", "rotate(-90)").attr("y", 40).attr("x", -height / 2).attr("dy", "-25px").style("text-anchor", "middle").text("Y Values");
+svg.append("g")
+    .attr("transform", `translate(${margin},0)`)
+    .call(yAxis);
 
-// Title
-svg.append("text").attr("x", width / 2).attr("y", 0).attr("text-anchor", "middle").style("font-size", "18px").style("font-weight", "bold").text("Polynomial Regression with Gradient Descent");
+// Add axis labels
+svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", height - 10)
+    .style("text-anchor", "middle")
+    .text("Normalized X Values");
 
-// Data points
+svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 40)
+    .attr("x", -height / 2)
+    .attr("dy", "-25px")
+    .style("text-anchor", "middle")
+    .text("Y Values");
+
+// Add graph title
+svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", 0)
+    .attr("text-anchor", "middle")
+    .style("font-size", "18px")
+    .style("font-weight", "bold")
+    .text("Polynomial Regression with Gradient Descent");
+
+// Add data points
 const circles = svg.selectAll("circle")
     .data(data)
     .enter()
@@ -61,53 +98,48 @@ const circles = svg.selectAll("circle")
     .attr("r", 4)
     .attr("fill", "blue");
 
-// Train function
+// Train the model
 async function trainModel() {
     let degree = parseInt(degreeInput.value);
     let baseLearningRate = Math.min(parseFloat(learningRateInput.value), 0.1);
     let iterations = parseInt(iterationsInput.value);
     let learningRate = baseLearningRate;
 
-    let coeffs = new Array(degree + 1).fill(0).map(() => Math.random() * 0.5 - 0.25); // Small centered values
+    let coeffs = new Array(degree + 1).fill(0).map(() => Math.random() * 0.2 - 0.1);
 
     for (let iter = 0; iter < iterations; iter++) {
         let gradients = new Array(degree + 1).fill(0);
-        let prevCoeffs = [...coeffs];
 
-        // Compute gradients
         data.forEach(point => {
             let pred = polynomial(coeffs, point.x);
             let error = pred - point.y;
             gradients = gradients.map((grad, i) => grad + (2 / data.length) * error * Math.pow(point.x, i));
         });
 
-        // Clip gradients
-        let maxGrad = Math.max(...gradients.map(Math.abs));
-        if (maxGrad > 1) {
-            gradients = gradients.map(g => g / maxGrad);
-        }
-
         // Update coefficients
         coeffs = coeffs.map((c, i) => c - learningRate * gradients[i]);
 
-        // Clip coefficients
-        coeffs = coeffs.map(c => Math.max(-1, Math.min(1, c)));
+        // Adjust learning rate dynamically
+        learningRate = baseLearningRate / (1 + iter / (iterations / 5));
 
-        // Reduce learning rate dynamically
-        learningRate = baseLearningRate / (1 + iter / (iterations / 10));
+        // Prevent extreme coefficient values
+        coeffs = coeffs.map(c => Math.max(-3, Math.min(3, c)));
 
+        // Update visualization
         updatePlot(coeffs);
         await new Promise(resolve => setTimeout(resolve, 10));
     }
 }
 
-// Update plot
+// Function to update the plot
 function updatePlot(coeffs) {
-    const lineGenerator = d3.line()
-        .x(d => xScale(d))
-        .y(d => yScale(Math.max(0, Math.min(10, polynomial(coeffs, d)))));
+    const xRange = d3.range(-1, 1, 0.05); // Ensure X stays in [-1,1]
 
-    let regressionLine = svg.selectAll(".regression-line").data([coeffs]);
+    const lineGenerator = d3.line()
+        .x(d => xScale(Math.max(-1, Math.min(1, d)))) // Clamp X within [-1,1]
+        .y(d => yScale(polynomial(coeffs, d))); // Y is already constrained in training
+
+    let regressionLine = svg.selectAll(".regression-line").data([xRange]);
 
     regressionLine
         .join(
@@ -117,11 +149,15 @@ function updatePlot(coeffs) {
                 .attr("stroke", "red")
                 .attr("stroke-width", 2)
                 .style("opacity", 1)
-                .attr("d", lineGenerator(d3.range(-1, 1, 0.05))),
-            update => update.transition().duration(300).ease(d3.easeLinear).attr("d", lineGenerator(d3.range(-1, 1, 0.05))),
+                .attr("d", lineGenerator(xRange)),
+            update => update.transition()
+                .duration(300)
+                .ease(d3.easeLinear)
+                .attr("d", lineGenerator(xRange)),
             exit => exit.remove()
         );
 }
 
-// Attach start button event
+
+// Attach start button event listener
 startButton.addEventListener("click", trainModel);
