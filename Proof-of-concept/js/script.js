@@ -272,28 +272,25 @@ class Visualization {
             this.updateVisibility();
         });
 
-
-        // Distribution type listener
-        document.getElementById("distributionType").addEventListener("change", (event) => {
-            this.state.pendingDistribution = event.target.value;
-        });
-
-        // Visualization type listener
-        document.getElementById("visualizationType").addEventListener("change", (event) => {
-            this.state.pendingVisualization = event.target.value;
-        });
-
         // Slider listeners
         const sliders = ["meanX1", "meanX2", "stdX1", "stdX2", "correlation"];
         sliders.forEach(id => {
             d3.select(`#${id}`).on("input", (event) => {
                 this.state.params[id] = +event.target.value;
+
+                // Update corresponding HTML display values
+                if (id === "meanX1") document.getElementById('meanValue').textContent = `${this.state.params.meanX1.toFixed(2)}, ${this.state.params.meanX2.toFixed(2)}`;
+                if (id === "meanX2") document.getElementById('meanValue').textContent = `${this.state.params.meanX1.toFixed(2)}, ${this.state.params.meanX2.toFixed(2)}`;
+                if (id === "stdX1") document.getElementById('stdX1Value').textContent = this.state.params.stdX1.toFixed(2);
+                if (id === "stdX2") document.getElementById('stdX2Value').textContent = this.state.params.stdX2.toFixed(2);
+
                 if (this.shouldShowBivariateNormal()) {
                     this.updatePlots();
                 }
             });
         });
     }
+
 
     shouldShowBivariateNormal() {
         return this.state.currentDistribution === 'bivariateNormal' &&
