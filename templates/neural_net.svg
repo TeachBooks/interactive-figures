@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100mm"
+   height="55mm"
+   viewBox="0 0 100 55"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="neural_net.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="2.1089996"
+     inkscape:cx="173.30492"
+     inkscape:cy="77.761987"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Results"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.311463;stroke-linecap:square;stroke-dasharray:none"
+       d="M 51.543198,2.8398248 V 18.323062 h 45.680636"
+       id="path5557" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Input-data">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.456376;stroke-linecap:square"
+       d="M 5.3105577,0.88029732 V 17.715571 H 45.147267"
+       id="path5351"
+       sodipodi:nodetypes="ccc" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="misc">
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.400003;stroke-linecap:square"
+       id="rect2484"
+       width="80.570198"
+       height="23.99025"
+       x="6.5721307"
+       y="27.64847"
+       inkscape:label="NN" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, ';text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.303001;stroke-linecap:square"
+       x="25.969069"
+       y="8.7818098"
+       id="text2543"><tspan
+         sodipodi:role="line"
+         id="tspan2541"
+         style="fill:#000000;stroke:none;stroke-width:0.303"
+         x="25.969069"
+         y="8.7818098">Training data</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, ';text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.303001;stroke-linecap:square"
+       x="78.910835"
+       y="7.0254488"
+       id="text2558"><tspan
+         sodipodi:role="line"
+         id="tspan2556"
+         style="stroke-width:0.303"
+         x="78.910835"
+         y="7.0254488">RMSE</tspan></text>
+  </g>
+</svg>
