@@ -1,0 +1,189 @@
+/* Reset and base styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Main container layout */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    width: 90vw;
+    height: 90vh;
+    padding: 10px;
+    gap: 10px;
+}
+
+/* Top settings section */
+.graph-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.settings-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.primary-controls {
+    display: flex;
+    gap: 15px;
+}
+
+.secondary-controls {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.settings-inputs {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.text-input-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9em;
+}
+
+.text-input {
+    padding: 3px 5px;
+    width: 120px;
+    height: 24px;
+    font-size: 0.9em;
+}
+
+select.text-input {
+    width: 180px;
+    padding-right: 20px;
+}
+
+/* Apply button styles */
+.apply-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+}
+
+.apply-button:hover {
+    background-color: #45a049;
+}
+
+.apply-button:active {
+    background-color: #3d8b40;
+}
+
+/* Content area layout */
+.content-container {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+    flex-grow: 1;
+}
+
+/* Visualization area */
+#app {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: 5px;
+}
+
+#app svg {
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    max-height: 80vh;
+}
+
+/* Controls container */
+.controls-container {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Slider styles */
+.slider-group {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    width: 100%;
+}
+
+.slider {
+    width: 100%;
+    margin: 5px 0;
+}
+
+.slider-label {
+    font-size: 0.9em;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.range-values {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 2px;
+}
+
+/* Stats section */
+.stats-section {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.stats-section h3 {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.stat-item {
+    margin-bottom: 8px;
+    font-size: 0.9em;
+}
+
+.stat-label {
+    color: #666;
+}
+
+.stat-value {
+    font-weight: bold;
+    color: #333;
+}
