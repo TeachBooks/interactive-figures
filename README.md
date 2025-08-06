@@ -63,12 +63,18 @@ Therefore, instead of creating the SVG template with code, we can instead intera
 - Standardizing the image e.g.: ![image-standard](/Images/image_standards.png)
 - Consider quiz-based interactive images, e.g.: user interactively changes values, in which the values can be used in a quiz as an answer
 
-# Current state: Proof of concept development
+# Previous state: Proof of concept complete
 
 - [x] Insert SVG image to a web page.
 - [x] Select specific path element from the SVG
 - [x] Update the SVG element attribute
 - [x] Create a very simple scatter or line plot utilising the template
+
+# Current state:
+- [x] Implemented neural network (+ visualize the network)
+- [x] Able to easily line plot and scatter plot data points
+- [x] Visualize bivariate Gaussian, and adjust params using sliders
+- [ ] Make the interactive figures pretty
 
 # Useful documentation
 
