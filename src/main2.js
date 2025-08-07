@@ -14,8 +14,8 @@ import { Gaussian } from "./interactions/Gaussian.js";
   mapper.buildMap();
 
 
-  const plotter = mapper.preparePlotter('xy-1', [-6, 6], [-6, 6]);
-  const xy_scatter = mapper.preparePlotter('xy-2', [-6, 6], [-6, 6]);
+  const plotter = mapper.preparePlotter('xy-1', [-6, 6], [-6, 6], true);
+  const xy_scatter = mapper.preparePlotter('xy-2', [-6, 6], [-6, 6], true);
 
   // Create Gaussian
   const g = new Gaussian([0, 0], [[1, 0], [0, 1]]);

@@ -55,7 +55,7 @@ export class ElementMapper {
       // Y-axis ticks & labels
       for (let i = 0; i <= yTicks; i++) {
         const val = yDomain[0] + i * yStep;
-        const x = xScale(0);
+        const x = xScale(xDomain[0]);
         const y = yScale(val);
 
         // Tick line
@@ -82,7 +82,7 @@ export class ElementMapper {
       for (let i = 0; i <= xTicks; i++) {
         const val = xDomain[0] + i * xStep;
         const x = xScale(val);
-        const y = yScale(0);
+        const y = yScale(yDomain[0]);
 
         const tick = document.createElementNS("http://www.w3.org/2000/svg", "line");
         tick.setAttribute("x1", x);
