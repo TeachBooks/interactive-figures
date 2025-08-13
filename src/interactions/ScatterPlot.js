@@ -26,3 +26,8 @@ export function scatterPoint(plotter, point, r = 1, fill = "blue") { // Function
   circle.setAttribute("fill", fill);
   targetElement.appendChild(circle);
 }
+export function clearScatterPlot(plotter) {
+  const { targetElement } = plotter;
+  const circles = targetElement.querySelectorAll("circle");
+  circles.forEach(circle => circle.remove());
+}
