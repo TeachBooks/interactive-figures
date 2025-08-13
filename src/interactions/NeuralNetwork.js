@@ -95,4 +95,18 @@ export class NeuralNetwork {
     }
     return Math.sqrt(batchError / batchSize); // RMSE for this batch
   }
+  updateLayers(newLayers) {
+    this.layers = newLayers;
+    this.weights = [];
+    this.biases = [];
+
+    for (let i = 1; i < newLayers.length; i++) {
+      this.weights.push(
+        Array.from({ length: newLayers[i] }, () =>
+          Array.from({ length: newLayers[i - 1] }, () => Math.random() * 2 - 1)
+        )
+      );
+      this.biases.push(Array.from({ length: newLayers[i] }, () => Math.random() * 2 - 1));
+    }
+  }
 }
