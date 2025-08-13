@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="88.626457mm"
+   height="34.053787mm"
+   viewBox="0 0 88.626458 34.053787"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="quick_xy.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="2.1089996"
+     inkscape:cx="116.88006"
+     inkscape:cy="89.615949"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg5" />
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="TriangleStart"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="TriangleStart"
+       markerWidth="5.3244081"
+       markerHeight="6.155385"
+       viewBox="0 0 5.3244081 6.1553851"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path135" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="TriangleStart-2"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="TriangleStart"
+       markerWidth="5.3244081"
+       markerHeight="6.155385"
+       viewBox="0 0 5.3244081 6.1553851"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path135-5" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="xy-2"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-14.246142,-125.57387)">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.228163;marker-start:url(#TriangleStart)"
+       d="M 52.519504,132.67472 V 151.3677"
+       id="y"
+       inkscape:label="y"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.228163;marker-end:url(#TriangleStart)"
+       d="M 52.634475,151.25506 H 71.822162"
+       id="x"
+       sodipodi:nodetypes="cc"
+       inkscape:label="x" />
+  </g>
+  <text
+     xml:space="preserve"
+     style="font-size:3.52777px;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, ';text-align:center;text-anchor:middle;fill:#000000;stroke-width:0.432001;stroke-linecap:square;stroke-dasharray:0.311462, 0.934389"
+     x="15.681803"
+     y="32.492702"
+     id="text4804"><tspan
+       sodipodi:role="line"
+       id="tspan4802"
+       style="stroke-width:0.432"
+       x="15.681803"
+       y="32.492702">Original data</tspan></text>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="right-side-text"
+     transform="translate(-14.246142,-125.57387)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="cov"
+     style="display:inline"
+     transform="translate(-14.246142,-125.57387)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="xy-1"
+     transform="translate(-14.246142,-125.57387)">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.228163;marker-start:url(#TriangleStart);marker-end:url(#TriangleStart)"
+       d="m 20.366974,132.74579 v 18.96883 H 40.07479"
+       id="path351" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="xy-3">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.228163;marker-start:url(#TriangleStart-2);marker-end:url(#TriangleStart-2)"
+       d="M 65.86656,7.6313979 V 26.600228 h 19.707816"
+       id="path351-8" />
+  </g>
+  <text
+     xml:space="preserve"
+     style="font-size:3.52777px;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, ';text-align:center;text-anchor:middle;fill:#000000;stroke-width:0.432001;stroke-linecap:square;stroke-dasharray:0.311462, 0.934389"
+     x="46.735931"
+     y="32.584019"
+     id="text4804-9"><tspan
+       sodipodi:role="line"
+       id="tspan4802-4"
+       style="stroke-width:0.432"
+       x="46.735931"
+       y="32.584019">In unit space</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:3.52777px;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, ';text-align:center;text-anchor:middle;fill:#000000;stroke-width:0.432001;stroke-linecap:square;stroke-dasharray:0.311462, 0.934389"
+     x="75.147209"
+     y="32.994511"
+     id="text5015"><tspan
+       sodipodi:role="line"
+       id="tspan5013"
+       style="stroke-width:0.432"
+       x="75.147209"
+       y="32.994511">Changing margins</tspan></text>
+</svg>

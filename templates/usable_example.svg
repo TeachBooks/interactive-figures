@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="77.131882mm"
-   height="24.379196mm"
-   viewBox="0 0 77.131882 24.379196"
+   width="88.626457mm"
+   height="34.053787mm"
+   viewBox="0 0 88.626458 34.053787"
    version="1.1"
    id="svg5"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
@@ -25,14 +25,14 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="2.1089996"
-     inkscape:cx="115.93175"
-     inkscape:cy="100.99575"
+     inkscape:cx="139.16551"
+     inkscape:cy="88.193473"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="1912"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="layer3" />
   <defs
      id="defs2">
     <marker
@@ -59,16 +59,16 @@
      inkscape:label="xy-2"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-20.233045,-130.05533)">
+     transform="translate(-14.246142,-125.57387)">
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.264999;marker-start:url(#TriangleStart)"
-       d="m 48.318281,131.65482 0,22.12977"
+       style="fill:none;stroke:#000000;stroke-width:0.228163;marker-start:url(#TriangleStart)"
+       d="m 48.003145,133.30199 v 18.69298"
        id="y"
        inkscape:label="y"
        sodipodi:nodetypes="cc" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.264999;marker-end:url(#TriangleStart)"
-       d="M 48.449286,153.65124 H 70.312962"
+       style="fill:none;stroke:#000000;stroke-width:0.228163;marker-end:url(#TriangleStart)"
+       d="M 48.118116,151.88233 H 67.305803"
        id="x"
        sodipodi:nodetypes="cc"
        inkscape:label="x" />
@@ -77,7 +77,7 @@
      inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="right-side-text"
-     transform="translate(-20.233045,-130.05533)">
+     transform="translate(-14.246142,-125.57387)">
     <text
        xml:space="preserve"
        style="font-size:2.11667px;fill:#ff0000;stroke:none;stroke-width:0.264999"
@@ -117,27 +117,26 @@
      id="layer3"
      inkscape:label="cov"
      style="display:inline"
-     sodipodi:insensitive="true"
-     transform="translate(-20.233045,-130.05533)">
+     transform="translate(-14.246142,-125.57387)">
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264999"
        d="M 83.887108,153.85344 H 81.5662 v -11.54181 h 2.258181"
        id="path1862" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264999"
-       d="m 94.91153,142.31163 h 2.320898 v 11.54181 H 94.97426"
+       d="m 95.969864,142.31163 h 2.320898 v 11.54181 h -2.258168"
        id="path1862-5" />
     <text
        xml:space="preserve"
        style="font-size:3.88056px;fill:#000000;stroke:none;stroke-width:0.264999"
-       x="73.725296"
+       x="75.312798"
        y="149.49986"
        id="text1994"
        inkscape:label="sigma"><tspan
          sodipodi:role="line"
          id="tspan1992"
          style="font-size:3.88056px;fill:#000000;stroke:none;stroke-width:0.265"
-         x="73.725296"
+         x="75.312798"
          y="149.49986">Σ=</tspan></text>
     <text
        xml:space="preserve"
@@ -192,10 +191,10 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="xy-1"
-     transform="translate(-20.233045,-130.05533)">
+     transform="translate(-14.246142,-125.57387)">
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.264999;marker-start:url(#TriangleStart);marker-end:url(#TriangleStart)"
-       d="M 21.04863,130.99636 V 153.4527 H 43.504974"
+       style="fill:none;stroke:#000000;stroke-width:0.228163;marker-start:url(#TriangleStart);marker-end:url(#TriangleStart)"
+       d="m 20.366974,132.74579 v 18.96883 H 40.07479"
        id="path351" />
   </g>
 </svg>
