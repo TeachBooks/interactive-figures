@@ -2,7 +2,7 @@ import { SVGTemplate } from "./core/SVGTemplate.js";
 import { ElementMapper } from "./core/ElementMapper.js";
 import { NeuralNetworkRenderer } from "./interactions/NeuralNetworkRender.js";
 import { NeuralNetwork } from "./interactions/NeuralNetwork.js";
-import { scatterPlot, scatterPoint } from "./interactions/ScatterPlot.js";
+import { clearScatterPlot, scatterPlot, scatterPoint } from "./interactions/ScatterPlot.js";
 import { linePlot } from "./interactions/LinePlot.js";
 
 (async function () {
@@ -12,7 +12,6 @@ import { linePlot } from "./interactions/LinePlot.js";
 
   const mapper = new ElementMapper(template.svgElement);
   mapper.buildMap();
-  // creating a quick dataset
   // Parameters
   const numPoints = 100;    // Number of data points
   const step = (2 * Math.PI) / numPoints; // Step size for x values
@@ -29,7 +28,11 @@ import { linePlot } from "./interactions/LinePlot.js";
 
   let layers = [1, 20, 20, 1]; // initial config
   const target = mapper.get("NN");
-  const nnRenderer = new NeuralNetworkRenderer(target, 0.8, 0.4);
+  const nnRenderer = new NeuralNetworkRenderer(target, 0.8, 0.2);
+  let model = new NeuralNetwork(layers, 'tanh'); // 1 input, 20 neurons, 2 hidden layers, 1 output
+  const res_window = mapper.preparePlotter('Results', [0, 4000], [0, 1], true);
+  const input_window = mapper.preparePlotter('Input-data', [0, 8], [-2, 2], true);
+
 
   // Initial render
   nnRenderer.render(layers);
@@ -46,17 +49,35 @@ import { linePlot } from "./interactions/LinePlot.js";
     nnRenderer.render(layers);
   });
 
-  // scatterPlot(mapper.preparePlotter('Input-data', [0, 10], [0, 10]), dataset, 0.5);
-  const input_window = mapper.preparePlotter('Input-data', [0, 10], [0, 10], true);
-  linePlot(input_window, dataset, 'red', 0.5);
+
+
+  linePlot(input_window, dataset, 'black', 0.3);
   // scatterPlot
+  let training = false;
+  let trainingId;
 
-  const model = new NeuralNetwork([1, 20, 20, 1], 'tanh'); // 1 input, 4 hidden, 1 output
+  const button = document.getElementById("startTraining");
+  button.addEventListener("click", () => {
+    if (!training) {
+      // Start training
+      model.updateLayers(layers);
+      training = true;
+      button.textContent = "Stop Training";
+      mapper.get('layer_info').textContent = `Layers: ${layers.join(', ')}`;
+      clearScatterPlot(res_window);
+      trainFrame();
+    } else {
+      // Stop training
+      training = false;
+      button.textContent = "Start Training";
+      cancelAnimationFrame(trainingId);
+    }
+  });
 
-  const res_window = mapper.preparePlotter('Results', [0, 4000], [0, 1], true);
   // console.log(dataset.at(-1).y);
   let rmse = [];
   function trainFrame(epoch = 0) {
+    if (!training) return;
     const batchSize = 100;
     for (let i = 0; i < dataset.length; i += batchSize) {
       const batch = dataset.slice(i, i + batchSize);
@@ -78,8 +99,6 @@ import { linePlot } from "./interactions/LinePlot.js";
     if (epoch < 4000) {
       requestAnimationFrame(() => trainFrame(epoch + 1));
     }
-    // console.log('epoch:', epoch, 'RMSE size:', rmse.length, 'last RMSE:', rmse.at(-1).y[0].toFixed(2));
   }
-  trainFrame();
 
 })();
