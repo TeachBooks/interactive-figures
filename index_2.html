@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>
   <title>Interactive SVG Framework</title>
 </head>
 <body>
@@ -28,8 +29,8 @@
 
         <!-- Sliders -->
         <div class="slider-group">
-            <div class="slider-label">mean</div>
-            <input id="meanX1" class="slider" type="range" min="-5" max="5" step="0.5" value="3">
+            <div class="slider-label">mean X1</div>
+            <input id="meanX1" class="slider" type="range" min="-5" max="5" step="0.5" value="0">
             <div class="range-values">
                 <span>-5</span>
                 <span>5</span>
@@ -37,26 +38,35 @@
         </div>
 
         <div class="slider-group">
-            <div class="slider-label">var1</div>
-            <input id="var1" class="slider" type="range" min="0.1" max="3" step="0.1" value="3">
+            <div class="slider-label">mean X2</div>
+            <input id="meanX2" class="slider" type="range" min="-5" max="5" step="0.5" value="0">
             <div class="range-values">
-                <span>0.1</span>
+                <span>-5</span>
+                <span>5</span>
+            </div>
+        </div>
+
+        <div class="slider-group">
+            <div class="slider-label">stdX1</div>
+            <input id="stdX1" class="slider" type="range" min="-3" max="3" step="0.1" value="1">
+            <div class="range-values">
+                <span>-3</span>
                 <span>3</span>
             </div>
         </div>
 
         <div class="slider-group">
-            <div class="slider-label">var2</div>
-            <input id="var2" class="slider" type="range" min="0.1" max="3" step="0.1" value="1">
+            <div class="slider-label">stdX2</div>
+            <input id="stdX2" class="slider" type="range" min="-3" max="3" step="0.1" value="1">
             <div class="range-values">
-                <span>0.1</span>
-                <span>2</span>
+                <span>-3</span>
+                <span>3</span>
             </div>
         </div>
-
+        
         <div class="slider-group">
-            <div class="slider-label">covariance</div>
-            <input id="stdX2" class="slider" type="range" min="-1" max="1" step="0.1" value="0.5">
+            <div class="slider-label">Correlation</div>
+            <input id="Correlation" class="slider" type="range" min="-1" max="1" step="0.1" value="0.5">
             <div class="range-values">
                 <span>-1</span>
                 <span>1</span>

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
-  <title>Interactive SVG Framework</title>
+    <title>Interactive SVG Framework</title>
 </head>
+
 <body>
-  <div id="app"></div>
-        <!-- Right side - Controls -->
+    <div id="app"></div>
+    <!-- Right side - Controls -->
     <div class="controls-container">
         <!-- Statistics Section -->
         <div class="stats-section">
@@ -27,50 +29,25 @@
         </div>
 
         <!-- Sliders -->
+        <button type="button" id="startTraining">Start training</button>
         <div class="slider-group">
             <div class="slider-label">Layer 1 Neurons</div>
-            <input id="meanX1" class="slider" type="range" min="1" max="10" step="1" value="4">
+            <input id="meanX1" class="slider" type="range" min="1" max="20" step="1" value="20">
             <div class="range-values">
                 <span>1</span>
-                <span>10</span>
+                <span>20</span>
             </div>
         </div>
 
         <div class="slider-group">
             <div class="slider-label">Layer 2 Neurons</div>
-            <input id="meanX2" class="slider" type="range" min="1" max="10" step="1" value="4">
+            <input id="meanX2" class="slider" type="range" min="1" max="20" step="1" value="20">
             <div class="range-values">
                 <span>1</span>
-                <span>10</span>
+                <span>20</span>
             </div>
         </div>
-
-        <div class="slider-group">
-            <div class="slider-label">Standard deviation of X1</div>
-            <input id="stdX1" class="slider" type="range" min="0.1" max="2" step="0.1" value="1">
-            <div class="range-values">
-                <span>0.1</span>
-                <span>2</span>
-            </div>
-        </div>
-
-        <div class="slider-group">
-            <div class="slider-label">Standard deviation of X2</div>
-            <input id="stdX2" class="slider" type="range" min="0.1" max="2" step="0.1" value="1">
-            <div class="range-values">
-                <span>0.1</span>
-                <span>2</span>
-            </div>
-        </div>
-
-        <div class="slider-group">
-            <div class="slider-label">Correlation</div>
-            <input id="correlation" class="slider" type="range" min="-1" max="1" step="0.01" value="0">
-            <div class="range-values">
-                <span>-1</span>
-                <span>1</span>
-            </div>
-        </div>
-  <script type="module" src="./src/main.js"></script>
+        <script type="module" src="./src/main.js"></script>
 </body>
+
 </html>
