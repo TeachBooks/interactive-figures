@@ -1,7 +1,13 @@
 export class Gaussian {
-  constructor(mu = [0, 0], cov = [[1, 0], [0, 1]]) {
+  constructor(mu = [0, 0], corr = 0.7, sigma_x = 1, sigma_y = 1) {
     this.mu = mu;
-    this.cov = cov;
+    this.cov = [
+      [sigma_x * sigma_x, sigma_x * sigma_y * corr],
+      [sigma_y * sigma_x * corr, sigma_y * sigma_y]
+    ];
+    this.sigma_x = sigma_x;
+    this.sigma_y = sigma_y;
+    this.corr = corr;
     this.lastContours = []; // store drawn ellipses for cleanup
   }
 
@@ -62,22 +68,22 @@ export class Gaussian {
   sample(n = 100) {
     const [[a, b], [_, c]] = this.cov;
 
-    // Cholesky decomposition of covariance matrix
-    // L = [[l11, 0], [l21, l22]]
+    // Cholesky decomposition Σ = L * L^T
     const l11 = Math.sqrt(a);
     const l21 = b / l11;
     const l22 = Math.sqrt(c - l21 * l21);
 
     const samples = [];
     for (let i = 0; i < n; i++) {
+      // Standard normal samples z1, z2
       const u1 = Math.random();
       const u2 = Math.random();
       const z1 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
       const z2 = Math.sqrt(-2 * Math.log(u1)) * Math.sin(2 * Math.PI * u2);
 
-      // Apply linear transform: x = μ + L * z
-      const x = (this.mu[0] + l11 * z1);
-      const y = (this.mu[1] + l21 * z1 + l22 * z2);
+      // Transform: x = μ + L * z
+      const x = this.mu[0] + l11 * z1;
+      const y = this.mu[1] + l21 * z1 + l22 * z2;
 
       samples.push({ x, y });
     }
@@ -85,9 +91,29 @@ export class Gaussian {
   }
 
 
+  transformSamples(samples) {
+    const L = [
+      [this.sigma_x, 0],
+      [this.sigma_y * this.corr, this.sigma_y * Math.sqrt(1 - (this.corr * this.corr))]
+    ];
+    // Transform each sample and add mean shift
+    return samples.map(({ x, y }) => {
+      const tx = L[0][0] * x + L[0][1] * y + this.mu[0];
+      const ty = L[1][0] * x + L[1][1] * y + this.mu[1];
+      return { x: tx, y: ty };
+    });
+  }
+
+
   // Update parameters
-  update(mu, cov) {
+  update(mu, sigma_x, sigma_y, corr) {
     this.mu = mu;
-    this.cov = cov;
+    this.sigma_x = sigma_x;
+    this.sigma_y = sigma_y;
+    this.corr = Math.min(0.9999999, Math.max(-0.9999999, corr));
+    this.cov = [
+      [sigma_x * sigma_x, sigma_x * sigma_y * this.corr],
+      [sigma_y * sigma_x * this.corr, sigma_y * sigma_y]
+    ];
   }
 }
